@@ -4,15 +4,15 @@ from .state import GraphState
 from langgraph.graph import StateGraph, END
 from functools import partial
 from typing import Any
-from ckb_back_end.modules.workflows.consistency_check.nodes import retrieve_node, generate_node
-from ckb_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
-from ckb_back_end.modules.labs_nlp.query_processor_interface import QueryProcessor
-from ckb_back_end.modules.labs_search.retriever_interface import RetrieverInterface
-from ckb_back_end.modules.labs_nlp.azure_client import get_llm_client
-from ckb_back_end.modules.labs_nlp.query_processor_interface import QueryRewriter
-from ckb_back_end.modules.labs_search.cosmos_db import get_vector_store
-from ckb_back_end.modules.labs_search.embeddings import get_openai_embeddings
-from ckb_back_end.modules.labs_search.retriever_interface import RerankingRetriever
+from aletheia_back_end.modules.workflows.rag.nodes import retrieve_node, generate_node
+from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
+from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryProcessor
+from aletheia_back_end.modules.labs_search.retriever_interface import RetrieverInterface
+from aletheia_back_end.modules.labs_nlp.azure_client import get_llm_client
+from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryRewriter
+from aletheia_back_end.modules.labs_search.cosmos_db import get_vector_store
+from aletheia_back_end.modules.labs_search.embeddings import get_azure_openai_embeddings, get_openai_embeddings
+from aletheia_back_end.modules.labs_search.retriever_interface import RerankingRetriever
 
 
 def get_rag_app(
@@ -66,9 +66,9 @@ def get_rag_app(
 
 # Instantiate the RAG workflow
 def get_rag_workflow_app() -> Any:
-    azure_llm_client = get_llm_client()
-    llm = azure_llm_client.llm
-    vector_store = get_vector_store(embedding_model=get_openai_embeddings())
+    llm_client = get_llm_client()
+    llm = llm_client.llm
+    vector_store = get_vector_store(embedding_model=get_azure_openai_embeddings())
     retriever = RerankingRetriever(vector_store=vector_store, llm=llm)
     query_rewriter = QueryRewriter(llm=llm)
-    return get_rag_app(azure_llm_client, retriever, query_rewriter)
+    return get_rag_app(llm_client, retriever, query_rewriter)

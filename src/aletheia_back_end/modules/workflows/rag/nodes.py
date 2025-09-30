@@ -1,14 +1,14 @@
 """ Node functions definition for the RAG workflow."""
 import os
 from .state import GraphState
-from ckb_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
-from ckb_back_end.utils.logging_config import get_configured_logger
-from ckb_back_end.utils.utils import load_prompt_template
+from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
+from aletheia_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.utils.utils import load_prompt_template
 
 # Set up logging
 logger = get_configured_logger(__name__)
 
-fact_check_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), 'fact_check_prompt.txt'))
+rag_llm_call_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), 'rag_llm_call_prompt.txt'))
 
 
 async def retrieve_node(state: GraphState, retriever, query_processor) -> GraphState:  # type: ignore[no-untyped-def] # Missing the type annotations because the retriever and the query_processor can be of different types
@@ -40,7 +40,7 @@ async def retrieve_node(state: GraphState, retriever, query_processor) -> GraphS
 
     logger.debug("Retrieving node end.")
     return {"query": query, "rewritten_query": rewritten_query,
-            "documents": documents, "prompt": fact_check_prompt,
+            "documents": documents, "prompt": rag_llm_call_prompt,
             "context": context}  # type: ignore[typeddict-item]
 
 
@@ -63,14 +63,14 @@ async def generate_node(state: GraphState, llm_client: LLMClientInterface) -> Gr
     logger.debug("\nGenerating node start.")
     query = state["query"]
     context = state["context"]
-    fact_check_prompt = state["prompt"]
+    rag_llm_call_prompt = state["prompt"]
 
     logger.debug("Debug, context for the LLM, based on the retrieved documents:\n", context)
 
     with open('context.txt', 'wt') as f:
         f.writelines(str(context))
 
-    output = await llm_client.rag_llm_call(query=query, context=context, prompt=fact_check_prompt)
+    output = await llm_client.rag_llm_call(query=query, context=context) # prompt=rag_llm_call_prompt)
 
     logger.debug("Generating node done.")
     return {"output": output}  # type: ignore[typeddict-item]

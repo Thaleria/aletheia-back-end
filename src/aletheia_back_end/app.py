@@ -2,9 +2,9 @@
 
 from fastapi import FastAPI
 
-from ckb_back_end.api.chat import chat_router
-from ckb_back_end.api.lfc import lfc_router
-from ckb_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.api.chat import chat_router
+from aletheia_back_end.api.lfc import lfc_router
+from aletheia_back_end.utils.logging_config import get_configured_logger
 
 app: FastAPI = FastAPI()
 app.include_router(chat_router)

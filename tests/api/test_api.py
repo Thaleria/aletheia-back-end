@@ -3,9 +3,9 @@ from fastapi.testclient import TestClient
 import pytest
 from typing import Any
 
-from ckb_back_end.app import app
-from ckb_back_end.api import chat
-from ckb_back_end.modules.workflows.rag_graph import get_rag_workflow_app
+from aletheia_back_end.app import app
+from aletheia_back_end.api import chat
+from aletheia_back_end.modules.workflows.rag_graph import get_rag_workflow_app
 
 client = TestClient(app)
 

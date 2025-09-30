@@ -3,7 +3,7 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
-from ckb_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.utils.logging_config import get_configured_logger
 
 # Set up logging
 logger = get_configured_logger(__name__)

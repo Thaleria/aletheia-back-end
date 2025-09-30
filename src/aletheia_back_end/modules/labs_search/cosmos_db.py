@@ -9,10 +9,10 @@ from langchain_azure_ai.vectorstores import AzureCosmosDBNoSqlVectorSearch
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 
-from ckb_back_end.app_settings import settings
-from ckb_back_end.modules.labs_search.embeddings import get_azure_openai_embeddings, get_openai_embeddings
-from ckb_back_end.modules.labs_search.vector_store_interface import VectorStoreInterface
-from ckb_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.app_settings import settings
+from aletheia_back_end.modules.labs_search.embeddings import get_azure_openai_embeddings, get_openai_embeddings
+from aletheia_back_end.modules.labs_search.vector_store_interface import VectorStoreInterface
+from aletheia_back_end.utils.logging_config import get_configured_logger
 
 # Set up logging
 logger = get_configured_logger(__name__)

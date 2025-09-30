@@ -5,7 +5,7 @@ from typing import Optional
 from langchain_core.prompts import PromptTemplate
 from langchain_core.documents import Document
 from .vector_store_interface import VectorStoreInterface
-from ckb_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.utils.logging_config import get_configured_logger
 
 # Set up logging
 logger = get_configured_logger(__name__)

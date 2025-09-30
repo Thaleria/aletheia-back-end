@@ -2,7 +2,7 @@
 
 from langchain_openai import AzureOpenAIEmbeddings, OpenAIEmbeddings
 
-from ckb_back_end.app_settings import settings
+from aletheia_back_end.app_settings import settings
 
 # from openai import AsyncAzureOpenAI
 

@@ -1,9 +1,9 @@
 """ Node functions definition for the RAG workflow."""
 import os
 from .state import GraphState
-from ckb_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
-from ckb_back_end.utils.logging_config import get_configured_logger
-from ckb_back_end.utils.utils import load_prompt_template
+from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
+from aletheia_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.utils.utils import load_prompt_template
 
 # Set up logging
 logger = get_configured_logger(__name__)

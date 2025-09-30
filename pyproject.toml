@@ -1,19 +1,19 @@
 [tool.poetry]
-name = "ckb-back-end"
+name = "aletheia-back-end"
 version = "0.0.0"
-description = "CKB Back End"
+description = "Atheleia Back End"
 authors = ["Thaleria Labs <info@thaleria.com>"]
 license = "GPL-3.0"
 readme = "README.md"
-homepage = "https://github.com/Thaleria_Labs/ckb-back-end"
-repository = "https://github.com/Thaleria_Labs/ckb-back-end"
-documentation = "https://ckb-back-end.readthedocs.io"
+homepage = "https://github.com/Thaleria_Labs/aletheia-back-end"
+repository = "https://github.com/Thaleria_Labs/aletheia-back-end"
+documentation = "https://aletheia-back-end.readthedocs.io"
 classifiers = [
     "Development Status :: 1 - Planning",
 ]
 
 [tool.poetry.urls]
-Changelog = "https://github.com/Thaleria_Labs/ckb-back-end/releases"
+Changelog = "https://github.com/Thaleria_Labs/aletheia-back-end/releases"
 
 [tool.poetry.dependencies]
 python = "~3.11.4"
@@ -42,7 +42,7 @@ ruff = ">=0.5.1"
 pydoclint = ">=0.5"
 
 [tool.poetry.scripts]
-ckb-back-end = "ckb_back_end.__main__:main"
+aletheia-back-end = "aletheia_back_end.__main__:main"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.0"
@@ -56,7 +56,7 @@ tests = ["tests", "*/tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["ckb_back_end"]
+source = ["aletheia_back_end"]
 
 [tool.coverage.report]
 show_missing = true

@@ -4,7 +4,7 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 
-from ckb_back_end.app_settings import settings
+from aletheia_back_end.app_settings import settings
 
 
 def setup_logging() -> None:

@@ -1,22 +1,21 @@
-"""Service to use OpenAI models."""
+"""Service to use AzureOpenAI model."""
 
 from typing import Any
 import os
 
-from langchain_openai import ChatOpenAI
-# from openai import OpenAI
+from langchain_openai import AzureChatOpenAI
 
-from ckb_back_end.app_settings import settings
-from ckb_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
+from aletheia_back_end.app_settings import settings
+from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from ckb_back_end.utils.utils import load_prompt_template
+from aletheia_back_end.utils.utils import load_prompt_template
 
 default_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), "default_prompt.txt"))
 
 
-class OpenAILLMClient(LLMClientInterface):
-    """Client for interacting with OpenAI LLM services.
+class AzureLLMClient(LLMClientInterface):
+    """Client for interacting with Azure OpenAI LLM services.
 
     This class implements the `LLMClientInterface` to provide a concrete
     implementation for making chat completion calls to Azure OpenAI.
@@ -40,14 +39,14 @@ class OpenAILLMClient(LLMClientInterface):
             max_tokens: The maximum number of tokens to generate. Defaults to 500.
             timeout: The request timeout in seconds. Defaults to 30.
         """
-        self._llm = ChatOpenAI(
-                model="gpt-3.5-turbo",  # cheapest OpenAI model
-                api_key=settings.openai_model_api_key,
+        self._llm = AzureChatOpenAI(
+                azure_endpoint=settings.azure_openai_endpoint,
+                api_key=settings.azure_openai_api_key,
+                azure_deployment=settings.azure_openai_deployment,
+                api_version=settings.azure_openai_api_version,
                 temperature=temperature,
-                organization=None,
                 max_tokens=max_tokens,
-                timeout=timeout,
-                reasoning_effort=None,  # TODO: Maybe something to explore. It's only available for reasoning models and he possible values are low, medium and high
+                timeout=timeout
             )
 
     async def rag_llm_call(self, query: str, context: str, prompt: str = default_prompt) -> str:
@@ -93,11 +92,11 @@ def get_llm_client() -> LLMClientInterface:
     """Provides an instance of an LLM client.
 
     This function serves as a factory or dependency injector, returning an
-    initialized instance of `OpenAILLMClient` that conforms to the
+    initialized instance of `AzureLLMClient` that conforms to the
     `LLMClientInterface`.
 
     Returns:
         LLMClientInterface: An initialized LLM client object, adhering to the
             `LLMClientInterface`.
     """
-    return OpenAILLMClient()
+    return AzureLLMClient()

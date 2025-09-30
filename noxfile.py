@@ -20,7 +20,7 @@ except ImportError:
     raise SystemExit(dedent(message)) from None
 
 
-package = "ckb_back_end"
+package = "aletheia_back_end"
 python_versions = ["3.11"]
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
@@ -152,7 +152,7 @@ def safety(session: Session) -> None:
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or [
-        "src/ckb_back_end",
+        "src/aletheia_back_end",
         # "tests",
         # "docs/conf.py",
     ]

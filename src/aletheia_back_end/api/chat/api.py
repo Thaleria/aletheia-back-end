@@ -4,8 +4,8 @@ from fastapi import HTTPException, status, Depends
 from fastapi.routing import APIRouter
 from typing import Any
 
-from ckb_back_end.modules.workflows.rag.rag_graph import get_rag_workflow_app
-from ckb_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.modules.workflows.rag.rag_graph import get_rag_workflow_app
+from aletheia_back_end.utils.logging_config import get_configured_logger
 
 from .models import ChatIn, ChatOut, ChatResponse
 

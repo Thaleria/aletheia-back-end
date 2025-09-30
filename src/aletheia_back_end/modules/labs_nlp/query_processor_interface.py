@@ -3,8 +3,8 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.language_models import BaseChatModel  # Import BaseChatModel for type hinting
 from abc import ABC, abstractmethod
 from typing import Any
-from ckb_back_end.utils.logging_config import get_configured_logger
-from ckb_back_end.utils.utils import load_prompt_template
+from aletheia_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.utils.utils import load_prompt_template
 
 query_rewriter_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), "query_rewriter_prompt.txt"))
 
