@@ -1,0 +1,10 @@
+alettajacobszaal: https://livestreaming.b67buv2.tweedekamer.nl/live/alettajacobszaal/audio/prog_index.m3u8
+groenvanprinstererzaal: https://livestreaming.b67buv2.tweedekamer.nl/live/groenvanprinstererzaal/audio/prog_index.m3u8
+BBC radio one: http://as-hls-ww-live.akamaized.net/pool_01505109/live/ww/bbc_radio_one/bbc_radio_one.isml/bbc_radio_one-audio%3d96000.norewind.m3u8
+klompezaal: https://livestreaming.b67buv2.tweedekamer.nl/live/klompezaal/audio/prog_index.m3u8
+maxvanderstoelzaal: https://livestreaming.b67buv2.tweedekamer.nl/live/maxvanderstoelzaal/audio/prog_index.m3u8
+plenairezaal: http://127.0.0.1:8000/master.m3u8
+suzegroenewegzaal: https://livestreaming.b67buv2.tweedekamer.nl/live/suzegroenewegzaal/audio/prog_index.m3u8
+thorbeckezaal: https://livestreaming.b67buv2.tweedekamer.nl/live/thorbeckezaal/audio/prog_index.m3u8
+troelstrazaal: https://livestreaming.b67buv2.tweedekamer.nl/live/troelstrazaal/audio/prog_index.m3u8
+wttewaallvanstoetwegenzaal: https://livestreaming.b67buv2.tweedekamer.nl/live/wttewaallvanstoetwegenzaal/audio/prog_index.m3u8
