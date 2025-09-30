@@ -1,0 +1,16 @@
+[mypy]
+strict = True
+warn_unreachable = True
+pretty = True
+show_column_numbers = True
+show_error_codes = True
+show_error_context = True
+disallow_subclassing_any = False
+python_version = 3.11
+warn_unused_ignores = True
+
+[mypy-langchain_azure_ai.*]
+disable_error_code = import-untyped
+
+[mypy-langchain_openai.*]
+disable_error_code = call-arg

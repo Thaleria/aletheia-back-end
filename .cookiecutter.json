@@ -1,0 +1,15 @@
+{
+  "_output_dir": "/Users/rmn/Projects/clients/Thaleria",
+  "_repo_dir": "/Users/rmn/.cookiecutters/cookiecutter-template",
+  "_template": "git@github.com:Thaleria/cookiecutter-template.git",
+  "author": "Thaleria Labs",
+  "copyright_year": "2025",
+  "development_status": "Development Status :: 1 - Planning",
+  "email": "info@thaleria.com",
+  "friendly_name": "CKB Back End",
+  "github_user": "Thaleria_Labs",
+  "license": "GPL-3.0",
+  "package_name": "ckb_back_end",
+  "project_name": "ckb-back-end",
+  "version": "0.0.0"
+}
