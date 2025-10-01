@@ -1,0 +1,37 @@
+{
+  "messages": [
+    {
+      "content": "Hello, how can I learn about RAG systems?",
+      "role": "user"
+    },
+    {
+      "content": "RAG systems combine retrieval and generation for better responses.",
+      "role": "assistant"
+    },
+    {
+      "content": "Can you explain more about retrieval modes?",
+      "role": "user"
+    }
+  ],
+  "context": {
+    "overrides": {
+      "top": 5,
+      "temperature": 0.7,
+      "minimum_reranker_score": 0,
+      "minimum_search_score": 0,
+      "retrieval_mode": "semantic",
+      "semantic_ranker": true,
+      "semantic_captions": true,
+      "suggest_followup_questions": true,
+      "use_oid_security_filter": false,
+      "use_groups_security_filter": false,
+      "vector_fields": ["embedding", "text"],
+      "use_gpt4v": false,
+      "gpt4v_input": "text"
+    }
+  },
+  "session_state": {
+    "conversation_id": "12345",
+    "last_message_id": "msg_002"
+  }
+}
