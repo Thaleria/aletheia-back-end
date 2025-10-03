@@ -88,7 +88,7 @@ class AzureLLMClient(LLMClientInterface):
             return f"Error: {str(e)}"
 
 
-def get_llm_client() -> LLMClientInterface:
+def get_azure_llm_client() -> LLMClientInterface:
     """Provides an instance of an LLM client.
 
     This function serves as a factory or dependency injector, returning an

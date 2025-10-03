@@ -8,11 +8,14 @@ from aletheia_back_end.modules.workflows.rag.nodes import retrieve_node, generat
 from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
 from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryProcessor
 from aletheia_back_end.modules.labs_search.retriever_interface import RetrieverInterface
-from aletheia_back_end.modules.labs_nlp.azure_client import get_llm_client
-from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryRewriter
-from aletheia_back_end.modules.labs_search.cosmos_db import get_vector_store
-from aletheia_back_end.modules.labs_search.embeddings import get_azure_openai_embeddings, get_openai_embeddings
-from aletheia_back_end.modules.labs_search.retriever_interface import RerankingRetriever
+
+from aletheia_back_end.utils.config_builders import (
+    load_workflow_config,
+    build_llm_client,
+    build_vector_store,
+    build_retriever,
+    build_query_processor,
+)
 
 
 def get_rag_app(
@@ -65,10 +68,15 @@ def get_rag_app(
 
 
 # Instantiate the RAG workflow
-def get_rag_workflow_app() -> Any:
-    llm_client = get_llm_client()
+def get_rag_workflow_app(config_path: str = "config/rag_workflow_config.yml") -> Any:
+    config = load_workflow_config(config_path)
+
+    # Build each piece from YAML
+    llm_client = build_llm_client(config["llm"])
     llm = llm_client.llm
-    vector_store = get_vector_store(embedding_model=get_azure_openai_embeddings())
-    retriever = RerankingRetriever(vector_store=vector_store, llm=llm)
-    query_rewriter = QueryRewriter(llm=llm)
+
+    vector_store = build_vector_store(config["vector_store"])
+    retriever = build_retriever(config["retriever"], llm, vector_store)
+    query_rewriter = build_query_processor(config["query_processor"], llm)
+
     return get_rag_app(llm_client, retriever, query_rewriter)
