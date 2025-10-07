@@ -4,21 +4,27 @@ from .state import GraphState
 from langgraph.graph import StateGraph, END
 from functools import partial
 from typing import Any
+from aletheia_back_end.app_settings import settings
 from aletheia_back_end.modules.workflows.consistency_check.nodes import retrieve_node, generate_node
 from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
 from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryProcessor
 from aletheia_back_end.modules.labs_search.retriever_interface import RetrieverInterface
-from aletheia_back_end.modules.labs_nlp.azure_client import get_llm_client
-from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryRewriter
-from aletheia_back_end.modules.labs_search.cosmos_db import get_vector_store
-from aletheia_back_end.modules.labs_search.embeddings import get_openai_embeddings
-from aletheia_back_end.modules.labs_search.retriever_interface import RerankingRetriever
+
+from aletheia_back_end.utils.config_builders import (
+    load_workflow_core_components_config,
+    load_workflows_config,
+    build_llm_client,
+    build_vector_store,
+    build_retriever,
+    build_query_processor,
+)
 
 
-def get_rag_app(
+def get_compiled_workflow(
     llm_client: LLMClientInterface,
     retriever: RetrieverInterface,
-    query_processor: QueryProcessor
+    query_processor: QueryProcessor,
+    prompt: str
 ) -> Any:
     """Creates and returns a compiled LangGraph workflow for RAG.
 
@@ -48,7 +54,7 @@ def get_rag_app(
     )
     workflow.add_node(
         "generate_node",
-        partial(generate_node, llm_client=llm_client)
+        partial(generate_node, llm_client=llm_client, prompt=prompt)
     )
 
     # Set up edges
@@ -66,9 +72,16 @@ def get_rag_app(
 
 # Instantiate the RAG workflow
 def get_rag_workflow_app() -> Any:
-    azure_llm_client = get_llm_client()
-    llm = azure_llm_client.llm
-    vector_store = get_vector_store(embedding_model=get_openai_embeddings())
-    retriever = RerankingRetriever(vector_store=vector_store, llm=llm)
-    query_rewriter = QueryRewriter(llm=llm)
-    return get_rag_app(azure_llm_client, retriever, query_rewriter)
+    components_config = load_workflow_core_components_config(settings.workflow_config_path)
+    nodes_config = load_workflows_config(settings.workflow_config_path)["consistency_check"].get("nodes", {})
+
+    # Get the config values from the YAML file
+    llm_client = build_llm_client(components_config["llm"])
+    llm = llm_client.llm
+
+    vector_store = build_vector_store(components_config["vector_store"])
+    retriever = build_retriever(components_config["retriever"], llm, vector_store)
+    query_rewriter = build_query_processor(components_config["query_processor"], llm)
+    generate_node_prompt = nodes_config["generate_node"]["prompt"]
+
+    return get_compiled_workflow(llm_client, retriever, query_rewriter, generate_node_prompt)

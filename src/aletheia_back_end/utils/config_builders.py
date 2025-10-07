@@ -1,5 +1,4 @@
 import yaml
-from pathlib import Path
 from typing import Any, Dict
 from langchain_core.language_models import BaseChatModel
 
@@ -10,6 +9,7 @@ from aletheia_back_end.modules.labs_search.embeddings import (
     get_azure_openai_embeddings,
     get_openai_embeddings,
 )
+
 from aletheia_back_end.modules.labs_search.retriever_interface import RetrieverInterface, RerankingRetriever
 from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryProcessor, QueryRewriter
 from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
@@ -17,7 +17,7 @@ from aletheia_back_end.modules.labs_search.vector_store_interface import VectorS
 
 
 def build_llm_client(config: Dict[str, Any]) -> LLMClientInterface:
-    # TODO: In the end pass only **params to the functions, istead of specifying every parameter. This is just for ease of debugging
+    # TODO: In the end pass only **params to the functions, instead of specifying every parameter. This is just for ease of debugging
     params = config.get("params", {})
     temperature = params.get("temperature")
     max_tokens = params.get("max_tokens")
@@ -58,18 +58,15 @@ def build_query_processor(config: Dict[str, Any], llm: BaseChatModel) -> QueryPr
     return QueryRewriter(llm, prompt)
 
 
-def load_workflow_core_components_config(path: str = "src/aletheia_back_end/config/rag_workflow_config.yml") -> Any:
+def load_workflow_core_components_config(path: str) -> Any:
     with open(path, "r") as f:
         return yaml.safe_load(f)["core_components"]
 
 
-def load_workflow_nodes_config(workflow_name: str, path: str = "src/aletheia_back_end/config/rag_workflow_config.yml", ) -> Any:
+def load_workflows_config(path: str) -> Any:
     with open(path, "r") as f:
         config = yaml.safe_load(f)
 
     workflows = {wf["name"]: wf for wf in config.get("workflows", [])}
 
-    if workflow_name not in workflows:
-        raise ValueError(f"Workflow '{workflow_name}' not found in {path}")
-
-    return workflows[workflow_name].get("nodes")
+    return workflows

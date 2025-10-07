@@ -7,9 +7,6 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.documents import Document
 from .vector_store_interface import VectorStoreInterface
 from aletheia_back_end.utils.logging_config import get_configured_logger
-from aletheia_back_end.utils.utils import load_prompt_template
-
-rerank_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), "rerank_prompt.txt"))
 
 # Set up logging
 logger = get_configured_logger(__name__)
@@ -129,7 +126,7 @@ class RerankingRetriever(BasicRetriever):
     def __init__(self,
                  vector_store: VectorStoreInterface,
                  llm: BaseChatModel,  # TODO: Verify if the BaseChatModel really is needed, the LLM's may come in different types
-                 prompt: str = rerank_prompt,
+                 prompt: str,
                  top_k_initial: int = 10,
                  top_n_reranked: int = 5) -> None:
         """Initializes the RerankingRetriever.
