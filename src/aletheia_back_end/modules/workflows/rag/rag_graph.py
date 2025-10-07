@@ -10,7 +10,7 @@ from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryPr
 from aletheia_back_end.modules.labs_search.retriever_interface import RetrieverInterface
 
 from aletheia_back_end.utils.config_builders import (
-    load_workflow_config,
+    load_workflow_core_components_config,
     build_llm_client,
     build_vector_store,
     build_retriever,
@@ -68,10 +68,10 @@ def get_rag_app(
 
 
 # Instantiate the RAG workflow
-def get_rag_workflow_app(config_path: str = "config/rag_workflow_config.yml") -> Any:
-    config = load_workflow_config(config_path)
+def get_rag_workflow_app(config_path: str = "src/aletheia_back_end/config/rag_workflow_config.yml") -> Any:
+    config = load_workflow_core_components_config(config_path)
 
-    # Build each piece from YAML
+    # Get the config values from the YAML file
     llm_client = build_llm_client(config["llm"])
     llm = llm_client.llm
 

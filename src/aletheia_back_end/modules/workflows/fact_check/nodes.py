@@ -3,12 +3,13 @@ import os
 from .state import GraphState
 from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
 from aletheia_back_end.utils.logging_config import get_configured_logger
-from aletheia_back_end.utils.utils import load_prompt_template
+from aletheia_back_end.utils.config_builders import load_workflow_nodes_config
 
 # Set up logging
 logger = get_configured_logger(__name__)
 
-fact_check_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), 'fact_check_prompt.txt'))
+nodes_config = load_workflow_nodes_config(workflow_name="fact_check", path="src/aletheia_back_end/config/rag_workflow_config.yml" )
+fact_check_prompt = nodes_config["generate_node"]["prompt"]
 
 
 async def retrieve_node(state: GraphState, retriever, query_processor) -> GraphState:  # type: ignore[no-untyped-def] # Missing the type annotations because the retriever and the query_processor can be of different types

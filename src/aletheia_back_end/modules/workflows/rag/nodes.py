@@ -3,12 +3,13 @@ import os
 from .state import GraphState
 from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
 from aletheia_back_end.utils.logging_config import get_configured_logger
-from aletheia_back_end.utils.utils import load_prompt_template
+from aletheia_back_end.utils.config_builders import load_workflow_nodes_config
 
 # Set up logging
 logger = get_configured_logger(__name__)
 
-rag_llm_call_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), 'rag_llm_call_prompt.txt'))
+nodes_config = load_workflow_nodes_config(workflow_name="rag", path="src/aletheia_back_end/config/rag_workflow_config.yml")
+rag_llm_call_prompt = nodes_config["generate_node"]["prompt"]
 
 
 async def retrieve_node(state: GraphState, retriever, query_processor) -> GraphState:  # type: ignore[no-untyped-def] # Missing the type annotations because the retriever and the query_processor can be of different types
@@ -70,7 +71,7 @@ async def generate_node(state: GraphState, llm_client: LLMClientInterface) -> Gr
     with open('context.txt', 'wt') as f:
         f.writelines(str(context))
 
-    output = await llm_client.rag_llm_call(query=query, context=context) # prompt=rag_llm_call_prompt)
+    output = await llm_client.rag_llm_call(query=query, context=context, prompt=rag_llm_call_prompt)
 
     logger.debug("Generating node done.")
     return {"output": output}  # type: ignore[typeddict-item]
