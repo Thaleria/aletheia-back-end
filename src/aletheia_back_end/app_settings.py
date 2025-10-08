@@ -71,8 +71,10 @@ class Settings(BaseSettings):
     LOG_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
     # --- Workflow Settings ---
-    workflow_config_path: str = ""
-    default_workflow: str = ""
+    active_workflow: str = ""
+    rag_workflow_config_path: str = ""
+    consistency_check_workflow_config_path: str = ""
+    fact_check_workflow_config_path: str = ""
 
     # Pydantic V2 way to configure settings
     model_config = SettingsConfigDict(

@@ -63,10 +63,6 @@ def load_workflow_core_components_config(path: str) -> Any:
         return yaml.safe_load(f)["core_components"]
 
 
-def load_workflows_config(path: str) -> Any:
+def load_nodes_config(path: str) -> Any:
     with open(path, "r") as f:
-        config = yaml.safe_load(f)
-
-    workflows = {wf["name"]: wf for wf in config.get("workflows", [])}
-
-    return workflows
+        return yaml.safe_load(f)["nodes"]

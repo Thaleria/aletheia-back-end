@@ -12,7 +12,7 @@ from aletheia_back_end.modules.labs_search.retriever_interface import RetrieverI
 
 from aletheia_back_end.utils.config_builders import (
     load_workflow_core_components_config,
-    load_workflows_config,
+    load_nodes_config,
     build_llm_client,
     build_vector_store,
     build_retriever,
@@ -72,8 +72,8 @@ def get_compiled_workflow(
 
 # Instantiate the RAG workflow
 def get_rag_workflow_app() -> Any:
-    components_config = load_workflow_core_components_config(settings.workflow_config_path)
-    nodes_config = load_workflows_config(settings.workflow_config_path)["rag"].get("nodes", {})
+    components_config = load_workflow_core_components_config(settings.rag_workflow_config_path)
+    nodes_config = load_nodes_config(settings.rag_workflow_config_path)
 
     # Get the config values from the YAML file
     llm_client = build_llm_client(components_config["llm"])

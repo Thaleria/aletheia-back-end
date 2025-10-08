@@ -18,13 +18,13 @@ def load_prompt_template(file_path: str) -> str:
 
 
 def get_config_rag_workflow_app() -> Any:
-    default_workflow = settings.default_workflow
+    active_workflow = settings.active_workflow
 
-    if default_workflow == "rag":
+    if active_workflow == "rag":
         return get_rag_workflow_app()
-    elif default_workflow == "fact_check":
+    elif active_workflow == "fact_check":
         return get_rag_fact_check_workflow_app()
-    elif default_workflow == "consistency_check":
+    elif active_workflow == "consistency_check":
         return get_rag_consistency_check_workflow_app()
     else:
-        raise ValueError(f"Unknown workflow name {default_workflow}")
+        raise ValueError(f"Unknown workflow name {active_workflow}")
