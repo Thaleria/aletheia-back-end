@@ -4,6 +4,7 @@ from aletheia_back_end.app_settings import settings
 from aletheia_back_end.modules.workflows.rag.rag_graph import get_rag_workflow_app
 from aletheia_back_end.modules.workflows.fact_check.rag_graph import get_rag_workflow_app as get_rag_fact_check_workflow_app
 from aletheia_back_end.modules.workflows.consistency_check.rag_graph import get_rag_workflow_app as get_rag_consistency_check_workflow_app
+from aletheia_back_end.modules.workflows.query_expander.rag_graph import get_rag_workflow_app as get_rag_query_expander_workflow_app
 
 
 # Define a function to load the prompt, making the logic reusable
@@ -26,5 +27,7 @@ def get_config_rag_workflow_app() -> Any:
         return get_rag_fact_check_workflow_app()
     elif active_workflow == "consistency_check":
         return get_rag_consistency_check_workflow_app()
+    elif active_workflow == "query_expander":
+        return get_rag_query_expander_workflow_app()
     else:
         raise ValueError(f"Unknown workflow name {active_workflow}")
