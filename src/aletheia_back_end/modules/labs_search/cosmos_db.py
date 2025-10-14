@@ -189,28 +189,29 @@ def initiate_cosmosdb_vectorstore(documents: list[Document]) -> Any:
 
 
 def get_vector_store(
-    embedding_model: Any  = Depends(get_azure_openai_embeddings),
+    embedding_model: Any,  # Depends(get_openai_embeddings)
 ) -> VectorStoreInterface:
     """Returns a previously configured Azure Cosmos DB vector store instance.
 
-    This function serves as a dependency injector for FastAPI, providing an
-    initialized instance of `AzureCosmosDBVectorStoreAdapter`. It configures
-    the vector store using global application settings (e.g., Cosmos DB URL,
-    key, database, and container names) and integrates with the provided
-    embedding model.
+    This function serves as a factory or dependency injector, returning an
+    initialized instance of `AzureCosmosDBVectorStoreAdapter` that conforms to
+    the `VectorStoreInterface`.
+    It configures the vector store using global application settings (e.g.,
+    Cosmos DB URL, key, database, and container names) and integrates with the
+    provided embedding model.
 
     Args:
-        embedding_model (Any): An embedding model instance, injected
-            via FastAPI's `Depends`. Defaults to the output of `get_openai_embeddings`.
+        embedding_model (Any): An embedding model instance, injected.
 
     Returns:
-        VectorStoreInterface: A configured instance of `AzureCosmosDBVectorStoreAdapter`
-            which adheres to the `VectorStoreInterface`.
+        VectorStoreInterface: A configured instance of 
+            `AzureCosmosDBVectorStoreAdapter` which adheres to the
+            `VectorStoreInterface`.
     """
     logger.info("Creating AzureCosmosDBVectorStoreAdapter instance.")
     cosmos_client = CosmosClient(settings.cosmos_url, settings.cosmos_key)
     return AzureCosmosDBVectorStoreAdapter(
-        embedding=get_azure_openai_embeddings(),
+        embedding=embedding_model,
         cosmos_client=cosmos_client,
         database_name=settings.database_name,
         container_name=settings.container_name,

@@ -1,3 +1,4 @@
+import os
 from operator import itemgetter
 from langchain_core.language_models import BaseChatModel
 from abc import ABC, abstractmethod
@@ -125,6 +126,7 @@ class RerankingRetriever(BasicRetriever):
     def __init__(self,
                  vector_store: VectorStoreInterface,
                  llm: BaseChatModel,  # TODO: Verify if the BaseChatModel really is needed, the LLM's may come in different types
+                 prompt: str,
                  top_k_initial: int = 10,
                  top_n_reranked: int = 5) -> None:
         """Initializes the RerankingRetriever.
@@ -150,11 +152,7 @@ class RerankingRetriever(BasicRetriever):
         self.llm = llm
         self.prompt_template = PromptTemplate(
             input_variables=["query", "doc"],
-            template="""On a scale of 1-10, rate the relevance of the following document to the query.
-                        Respond with only the numerical score.
-                        query: {query}
-                        Document: {doc}
-                        Relevance Score:"""
+            template=prompt
         )
         self.llm_chain = self.prompt_template | self.llm
 
@@ -257,7 +255,7 @@ class RerankingRetriever(BasicRetriever):
             return ""  # Handle empty list case
 
         # Extract page_content from each document
-        #TODO: Write Notion task for this
+        # TODO: Write Notion task for this
         document_contents = ['\n'.join([str(doc.metadata), doc.page_content]) for doc in documents]
         context = "\n\n".join(document_contents)
 

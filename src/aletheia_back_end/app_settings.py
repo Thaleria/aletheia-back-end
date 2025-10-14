@@ -70,6 +70,12 @@ class Settings(BaseSettings):
     LOG_TO_CONSOLE: bool = True  # Enable/disable console logging
     LOG_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
+    # --- Workflow Settings ---
+    active_workflow: str = ""
+    rag_workflow_config_path: str = ""
+    consistency_check_workflow_config_path: str = ""
+    fact_check_workflow_config_path: str = ""
+
     # Pydantic V2 way to configure settings
     model_config = SettingsConfigDict(
         env_file="src/aletheia_back_end/.env",

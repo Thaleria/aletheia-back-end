@@ -4,9 +4,6 @@ from langchain_core.language_models import BaseChatModel  # Import BaseChatModel
 from abc import ABC, abstractmethod
 from typing import Any
 from aletheia_back_end.utils.logging_config import get_configured_logger
-from aletheia_back_end.utils.utils import load_prompt_template
-
-query_rewriter_prompt = load_prompt_template(os.path.join(os.path.dirname(__file__), "query_rewriter_prompt.txt"))
 
 # Set up logging
 logger = get_configured_logger(__name__)
@@ -38,7 +35,7 @@ class QueryRewriter(QueryProcessor):
     for a more specific and detailed query that is likely to retrieve more
     relevant information in a RAG system.
     """
-    def __init__(self, llm: BaseChatModel, prompt: str = query_rewriter_prompt):
+    def __init__(self, llm: BaseChatModel, prompt: str):
         """Initializes the QueryRewriter.
 
         Args:

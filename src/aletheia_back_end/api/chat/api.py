@@ -4,8 +4,8 @@ from fastapi import HTTPException, status, Depends
 from fastapi.routing import APIRouter
 from typing import Any
 
-from aletheia_back_end.modules.workflows.rag.rag_graph import get_rag_workflow_app
 from aletheia_back_end.utils.logging_config import get_configured_logger
+from aletheia_back_end.utils.utils import get_config_rag_workflow_app
 
 from .models import ChatIn, ChatOut, ChatResponse
 
@@ -23,7 +23,7 @@ __all__: list[str] = ["chat_router"]
     status_code=status.HTTP_200_OK,
     description="Post chat.",
 )
-async def post_chat(request: ChatIn, rag_workflow_app: Any = Depends(get_rag_workflow_app)
+async def post_chat(request: ChatIn, rag_workflow_app: Any = Depends(get_config_rag_workflow_app)
 ) -> ChatOut:
     """Endpoint for Aletheia chat. Handles incoming chat requests, retrieves
     relevant documents, and generates a response using an LLM.
