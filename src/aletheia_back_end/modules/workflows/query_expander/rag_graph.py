@@ -80,7 +80,8 @@ def get_compiled_workflow(
     )
 
     # Set up edges
-    for i in range(3):
+    for i in range(num_queries):
+        # By using add_edge (node A-> node B, node A-> node C ...etc) the nodes run in parallel.
         workflow.add_edge("expand_queries_node", f"retrieve_branch_{i}")
         workflow.add_edge(f"retrieve_branch_{i}", "gather_and_rerank_node")
     workflow.add_edge("gather_and_rerank_node", "generate_node")
