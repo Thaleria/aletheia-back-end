@@ -75,6 +75,7 @@ class Settings(BaseSettings):
     rag_workflow_config_path: str = ""
     consistency_check_workflow_config_path: str = ""
     fact_check_workflow_config_path: str = ""
+    query_expander_workflow_config_path: str = ""
 
     # Pydantic V2 way to configure settings
     model_config = SettingsConfigDict(

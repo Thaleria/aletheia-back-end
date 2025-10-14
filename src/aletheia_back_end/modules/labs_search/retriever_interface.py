@@ -157,7 +157,7 @@ class RerankingRetriever(BasicRetriever):
         self.llm_chain = self.prompt_template | self.llm
 
     async def _get_llm_relevance_score(self, query: str, doc_content: str) -> float:
-        """Tethod to get a relevance score from the LLM for a single document.
+        """Method to get a relevance score from the LLM for a single document.
 
         This method uses an LLM to give a numerical relevance score based on
         the document's content and the query. The LLM's output is then parsed.
