@@ -25,15 +25,16 @@ __all__: list[str] = ["chat_router"]
 )
 async def post_chat(request: ChatIn,
                     rag_workflow_app: Any = Depends(get_config_rag_workflow_app),
-                    party_id: Optional[str | int] = Query(None, description="Optional party identifier")
+                    party_id: Optional[str | int] = Query(None, description="Optional political party ID")
 ) -> ChatOut:
     """Endpoint for Aletheia chat. Handles incoming chat requests, retrieves
     relevant documents, and generates a response using an LLM.
 
-    This asynchronous function processes a chat input and extracts the user's
-    query. The RAG workflow is then run where a similarity search is perfomed
-    on the vector store to retrieve relevant documents, a context is
-    constructed from these documents, and an LLM generates a response.
+    This asynchronous function processes a chat input, extracts the user's
+    query and optional party_id. The RAG workflow is then run where a
+    similarity search is perfomed on the vector store to retrieve relevant
+    documents, a context is constructed from these documents, and an LLM
+    generates a response.
 
     Args:
         request (ChatIn): A ChatIn object containing the user's messages and

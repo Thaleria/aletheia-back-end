@@ -1,4 +1,3 @@
-import os
 from operator import itemgetter
 from langchain_core.language_models import BaseChatModel
 from abc import ABC, abstractmethod
@@ -24,6 +23,8 @@ class RetrieverInterface(ABC):
             query (str): The user's query string.
             top_k (int): The number of top relevant documents to retrieve.
                 Defaults to 5.
+            party_id (str | int, optional): An optional political party ID to
+                filter documents by. Defaults to None.
 
         Returns:
             list[Document]: A list of LangChain Document objects representing
@@ -66,8 +67,10 @@ class BasicRetriever(RetrieverInterface):
 
         Args:
             query (str): The query string.
-            k v: The number of top documents to retrieve.
+            k (int, optional): The number of top documents to retrieve.
                 If None, `self.top_k` is used.
+            party_id (str | int, optional): An optional political party ID to
+                filter documents by. Defaults to None.
 
         Returns:
             list[Document]: A list of retrieved documents. Returns an empty
@@ -195,8 +198,10 @@ class RerankingRetriever(BasicRetriever):
 
         Args:
             query (str): The query string.
-            k (int, optional): The number of final reranked documents to return.
-                If None, uses `self.top_n_reranked`.
+            k (int, optional): The number of final reranked documents to
+                return. If None, uses `self.top_n_reranked`.
+            party_id (str | int, optional): An optional political party ID to
+                filter documents by. Defaults to None.
 
         Returns:
             list[Document]: A list of reranked documents.
