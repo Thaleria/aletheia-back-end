@@ -1,0 +1,61 @@
+version: 1.0.0
+core_components:
+  llm:
+    type: AzureOpenAIClient  # # Options: OpenAIClient, AzureOpenAIClient 
+    params:
+      temperature: 0.2
+      max_tokens: 5000
+      timeout: 40
+
+  vector_store:
+    type: AzureCosmosDBNoSqlVectorSearch
+    params:
+      top_k: 5
+      filter: None
+      search_type: "similarity"
+      embeddings:
+        type: AzureOpenAIEmbeddings # Options: OpenAIEmbeddings, AzureOpenAIEmbeddings
+
+  query_processor:
+    type: QueryExpander # Options: QueryExpander, QueryRewriter
+    params:
+      num_queries: 3
+      prompt: |
+        Given the input query, generate {num_queries}
+        varied rephrasings or augmentations to improve retrieval in a RAG
+        system. Each variation should be concise, maintain the core intent,
+        and differ in wording or perspective. Return the variations as a
+        numbered list:
+        Input query: {original_query}
+        Output format:\n1. Variation 1\n2. Variation 2\n...
+
+  retriever:
+    type: BasicRetriever # Options: BasicRetriever, RerankingRetriever
+    params:
+      top_k_initial: 5
+      # top_n_reranked: 5 # Ignore top_n_reranked and prompt for BasicRetriever
+      # prompt: |
+      #   Given the input query, generate {num_queries}
+      #   varied rephrasings or augmentations to improve retrieval in a RAG
+      #   system. Each variation should be concise, maintain the core intent,
+      #   and differ in wording or perspective. Return the variations as a
+      #   numbered list:
+      #   Input query: {query}
+      #   Output format:\n1. Variation 1\n2. Variation 2\n...
+
+  reranker:
+    type: Reranker
+    params:
+      top_k: 5
+      prompt: |
+        On a scale of 1-10, rate the relevance of the following document to the query.
+        Respond with only the numerical score.
+        query: {query}
+        Document: {doc}
+        Relevance Score:
+
+nodes:
+  generate_node:
+    prompt: | 
+      You're the final stage of a RAG system, and given the context, provide a comprehensive answer to the query.
+      If the context is insufficient, respond with "Insufficient information to answer the query."

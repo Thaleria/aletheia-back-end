@@ -23,8 +23,7 @@ __all__: list[str] = ["chat_router"]
     status_code=status.HTTP_200_OK,
     description="Post chat.",
 )
-async def post_chat(request: ChatIn, rag_workflow_app: Any = Depends(get_config_rag_workflow_app)
-) -> ChatOut:
+async def post_chat(request: ChatIn, rag_workflow_app: Any = Depends(get_config_rag_workflow_app)) -> ChatOut:
     """Endpoint for Aletheia chat. Handles incoming chat requests, retrieves
     relevant documents, and generates a response using an LLM.
 
