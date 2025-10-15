@@ -1,8 +1,8 @@
 """API for chat."""
 
-from fastapi import HTTPException, status, Depends
+from fastapi import HTTPException, Query, status, Depends
 from fastapi.routing import APIRouter
-from typing import Any
+from typing import Any, Optional
 
 from aletheia_back_end.utils.logging_config import get_configured_logger
 from aletheia_back_end.utils.utils import get_config_rag_workflow_app
@@ -23,7 +23,10 @@ __all__: list[str] = ["chat_router"]
     status_code=status.HTTP_200_OK,
     description="Post chat.",
 )
-async def post_chat(request: ChatIn, rag_workflow_app: Any = Depends(get_config_rag_workflow_app)) -> ChatOut:
+async def post_chat(request: ChatIn,
+                    rag_workflow_app: Any = Depends(get_config_rag_workflow_app),
+                    party_id: Optional[str | int] = Query(None, description="Optional party identifier")
+) -> ChatOut:
     """Endpoint for Aletheia chat. Handles incoming chat requests, retrieves
     relevant documents, and generates a response using an LLM.
 
@@ -49,14 +52,19 @@ async def post_chat(request: ChatIn, rag_workflow_app: Any = Depends(get_config_
         if not request.messages or not request.messages[0].content:
             raise HTTPException(400, "Query cannot be empty")
         query = request.messages[0].content
-        # top_k = request.context.overrides.top  # TODO: Implement top_k in context overrides
-        # temperature = request.context.overrides.temperature  # TODO: Implement temperature in context overrides
 
         logger.debug("Received input: %s ", request.model_dump())
 
         # Invoke the LangGraph RAG workflow
         logger.debug("\nStarting RAG workflow.")
-        response = await rag_workflow_app.ainvoke({"query": query})
+        workflow_input = {"query": query, "party_id": None}
+
+        if party_id:
+            logger.debug("PartyID provided: %s", party_id)
+            workflow_input["party_id"] = party_id
+
+        logger.debug("Debug, workflow_input: ", workflow_input)
+        response = await rag_workflow_app.ainvoke(workflow_input)
 
         # Extract the final output through GraphState's "output".
         final_answer = response.get(

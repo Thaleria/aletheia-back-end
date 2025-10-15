@@ -80,7 +80,7 @@ def get_rag_workflow_app() -> Any:
     llm = llm_client.llm
 
     vector_store = build_vector_store(components_config["vector_store"])
-    retriever = build_retriever(components_config["retriever"], llm, vector_store)
+    retriever = build_retriever(components_config["retriever"], vector_store, llm)
     query_rewriter = build_query_processor(components_config["query_processor"], llm)
     generate_node_prompt = nodes_config["generate_node"]["prompt"]
 
