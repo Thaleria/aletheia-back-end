@@ -52,8 +52,9 @@ async def retrieve_node(state: GraphState, index: int, retriever) -> GraphState:
     """
     logger.debug("\nRetrieving node start.")
     query = state["expanded_queries"][index]
+    party_id = state["party_id"]
 
-    documents = await retriever.retrieve(query=query,)
+    documents = await retriever.retrieve(query=query, party_id=party_id)
 
     logger.debug("Retrieving node end.")
     return {"documents": documents}  # type: ignore[typeddict-item]

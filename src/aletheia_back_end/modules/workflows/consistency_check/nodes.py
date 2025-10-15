@@ -29,10 +29,11 @@ async def retrieve_node(state: GraphState, retriever, query_processor) -> GraphS
     """
     logger.debug("\nRetrieving node start.")
     query = state["query"]
+    party_id = state["party_id"]
 
     rewritten_query = await query_processor.process(query=query)
 
-    documents = await retriever.retrieve(query=rewritten_query, )
+    documents = await retriever.retrieve(query=rewritten_query, party_id=party_id)
     context = retriever.build_rag_context(documents)
 
     logger.debug("Retrieving node end.")
