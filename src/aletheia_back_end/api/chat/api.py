@@ -49,9 +49,6 @@ async def post_chat(request: ChatIn,
         HTTPException: If the input query is empty (status code 400).
     """
     try:
-        # Extract query and parameters
-        if not request.messages or not request.messages[0].content:
-            raise HTTPException(400, "Query cannot be empty")
         query = request.messages[0].content
 
         logger.debug("Received input: %s ", request.model_dump())
