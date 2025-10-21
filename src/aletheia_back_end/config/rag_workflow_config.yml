@@ -11,13 +11,11 @@ core_components:
     type: AzureCosmosDBNoSqlVectorSearch
     params:
       top_k: 5
-      filter: None
-      search_type: "similarity"
       embeddings:
         type: AzureOpenAIEmbeddings # Or OpenAIEmbeddings
 
   retriever:
-    type: RerankingRetriever # Or BasicRetriever
+    type: RerankingRetriever # Options: BasicRetriever, RerankingRetriever
     params:
       top_k_initial: 10
       top_n_reranked: 5
@@ -42,17 +40,5 @@ core_components:
 nodes:
   generate_node:
     prompt: | 
-      Je bent een expert in het analyseren van politieke speeches. Je taak is om specifieke meningen en standpunten te identificeren. Geef je antwoord terug in JSON formaat. Zou je uit de onderstaande speech uit een Tweede Kamerdebat de specifieke meningen van de spreker kunnen halen? Let op: Het gaat om subjectieve uitspraken of standpunten, waarbij de spreker duidelijk een oordeel, voorkeur, kritiek of aanbeveling uitspreekt. Vermijd algemene of feitelijke mededelingen die niet duidelijk een mening bevatten. Denk bijvoorbeeld aan:
-      •   Waarderingen ("Ik vind dit onacceptabel", "Dit is een goede ontwikkeling")
-      •   Beleidsvoorkeuren ("Wij pleiten voor...", "Onze partij wil dat...")
-      •   Kritiek of steun voor andere organisatie(vormen), beleidsmaatregelen of instituties
-
-      Geef je antwoord terug in het volgende JSON formaat:
-      {
-        "meningen": [
-          {
-            "mening": "beknopte samenvatting van de mening",
-            "opmerking": "de exacte zin of zinnen uit de speech waarop dit gebaseerd is"
-          }
-        ]
-      }
+      You're the final stage of a RAG system, and given the context, provide a comprehensive answer to the query.
+      If the context is insufficient, respond with "Insufficient information to answer the query."

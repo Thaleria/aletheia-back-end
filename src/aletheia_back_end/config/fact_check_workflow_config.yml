@@ -11,8 +11,6 @@ core_components:
     type: AzureCosmosDBNoSqlVectorSearch
     params:
       top_k: 5
-      filter: None
-      search_type: "similarity"
       embeddings:
         type: AzureOpenAIEmbeddings # Or OpenAIEmbeddings
 

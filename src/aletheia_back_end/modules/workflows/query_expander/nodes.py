@@ -28,9 +28,9 @@ async def expand_queries_node(state: GraphState, query_processor) -> GraphState:
     logger.debug("\nExpanding queries node start.")
     query = state["query"]
 
-    # This holds the raw formatted string from the LLM (e.g., "1. query A\n2. query B")
+    # Raw formatted string from the LLM (e.g., "1. query A\n2. query B")
     raw_expanded_queries = await query_processor.process(query=query)
-    # This holds the parsed list of expanded queries (e.g., ["query A", "query B"])
+    # Parsed list of expanded queries (e.g., ["query A", "query B"])
     expanded_queries = query_processor._parse_llm_response(raw_expanded_queries)
 
     logger.debug("Expanding queries node end.")
@@ -52,8 +52,9 @@ async def retrieve_node(state: GraphState, index: int, retriever) -> GraphState:
     """
     logger.debug("\nRetrieving node start.")
     query = state["expanded_queries"][index]
+    party_id = state["party_id"]
 
-    documents = await retriever.retrieve(query=query,)
+    documents = await retriever.retrieve(query=query, party_id=party_id)
 
     logger.debug("Retrieving node end.")
     return {"documents": documents}  # type: ignore[typeddict-item]

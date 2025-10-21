@@ -106,7 +106,7 @@ def get_rag_workflow_app() -> Any:
     llm = llm_client.llm
 
     vector_store = build_vector_store(components_config["vector_store"])
-    retriever = build_retriever(components_config["retriever"], vector_store, llm)
+    retriever = build_retriever(components_config["retriever"], llm, vector_store)
     query_processor = build_query_processor(components_config["query_processor"], llm)
     reranker = build_reranker(components_config["reranker"], llm)
 

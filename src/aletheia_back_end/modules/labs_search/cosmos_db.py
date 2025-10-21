@@ -1,6 +1,6 @@
 """Azure Cosmos DB vector store setup for LangChain."""
 
-from typing import Any
+from typing import Any, Optional
 
 from azure.cosmos import CosmosClient
 from azure.cosmos.exceptions import CosmosHttpResponseError
@@ -105,13 +105,11 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
             cosmos_container_properties=cosmos_container_properties,
             cosmos_database_properties=cosmos_database_properties,
             vector_search_fields=vector_search_fields,
-            search_type=search_type,
+            search_type=search_type
         )
         logger.info("AzureCosmosDBVectorStoreAdapter initialized.")
 
-    async def search(self, query: str, top_k: int = 10,
-                     filter: dict | None = None,
-                     search_type: str = "similarity") -> Any:
+    async def search(self, query: str, party_id: Optional[str | int] = None, top_k: int = 10) -> Any:
         """Performs a similarity search using the Azure Cosmos DB vector store
         based on the input query.
 
@@ -120,8 +118,6 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
             top_k (int): The number of top similar documents to retrieve.
                 Defaults to 5.
             filter (dict): Key / value dict for filtering
-            search_type (str): The type of search to perform.
-                Defaults to "similarity".
 
         Returns:
             Any: A list of documents retrieved from the vector store.
@@ -129,10 +125,9 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
         logger.info(
             f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k={top_k}'"
         )
-
         return self._vector_store.similarity_search(query=query,
                                                     k=top_k,
-                                                    filter=filter)
+                                                    filter={"PartyID": party_id} if party_id else None)
 
 
 def initiate_cosmosdb_vectorstore(documents: list[Document]) -> Any:
