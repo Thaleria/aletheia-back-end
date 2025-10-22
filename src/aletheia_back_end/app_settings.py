@@ -33,20 +33,19 @@ class Settings(BaseSettings):
         "embedding_field": "vector1"
     }
     cosmos_database_properties: dict[str, Any] = {}
-    vector_embedding_policy: dict[str, Any] = {}
 
     # Azure OpenAI settings
     azure_openai_api_key: SecretStr = Field(default=SecretStr(""))
     azure_openai_endpoint: str = ""
     azure_openai_api_version: str = ""
     azure_openai_deployment: str = ""
-    azure_openai_embeddings_dimensions: int = Field(default=1536)
 
     # Azure OpenAI embeddings settings
     azure_openai_embeddings_model_api_key: SecretStr = Field(default=SecretStr("None"))
     azure_openai_embeddings_model_endpoint: str = ""
     azure_openai_embeddings_model_deployment: str = ""
     azure_openai_embeddings_model_api_version: str = ""
+    azure_openai_embeddings_model_dimensions: int = Field(default=1536)
 
     # OpenAI settings
     openai_model_api_key: SecretStr = Field(default=SecretStr("None"))

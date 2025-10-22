@@ -24,7 +24,7 @@ vector_embedding_policy = {
             "path": "/" + settings.vector_embeddings_path,
             "dataType": "float32",
             "distanceFunction": "cosine",
-            "dimensions": settings.azure_openai_embeddings_dimensions,
+            "dimensions": settings.azure_openai_embeddings_model_dimensions,
         }
     ]
 }
@@ -125,9 +125,9 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
         logger.info(
             f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k={top_k}'"
         )
-        return self._vector_store.similarity_search(query=query,
-                                                    k=top_k,
-                                                    filter={"PartyID": party_id} if party_id else None)
+        return await self._vector_store.asimilarity_search(query=query,
+                                                           k=top_k,
+                                                           filter={"PartyID": party_id} if party_id else None)
 
 
 def initiate_cosmosdb_vectorstore(documents: list[Document]) -> Any:

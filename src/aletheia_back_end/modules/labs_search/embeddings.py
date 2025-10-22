@@ -48,12 +48,14 @@ def get_azure_openai_embeddings() -> AzureOpenAIEmbeddings:
             settings.azure_openai_embeddings_model_api_version,
             settings.azure_openai_embeddings_model_endpoint,
             settings.azure_openai_embeddings_model_api_key,
+            settings.azure_openai_embeddings_model_dimensions
         ]
     ):
         raise ValueError("Missing Azure OpenAI environment variables")
 
     return AzureOpenAIEmbeddings(
         azure_deployment=settings.azure_openai_embeddings_model_deployment,
+        dimensions=settings.azure_openai_embeddings_model_dimensions,
         api_version=settings.azure_openai_embeddings_model_api_version,
         azure_endpoint=settings.azure_openai_embeddings_model_endpoint,
         openai_api_key=settings.azure_openai_embeddings_model_api_key,
