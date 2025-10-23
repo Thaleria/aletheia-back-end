@@ -1,6 +1,7 @@
 """Azure Cosmos DB vector store setup for LangChain."""
 
 from typing import Any, Optional
+import asyncio
 
 from azure.cosmos import CosmosClient
 from azure.cosmos.exceptions import CosmosHttpResponseError
@@ -115,19 +116,39 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
 
         Args:
             query (str): The input query string to search for.
+            party_id (Optional[str | int]): An optional political party ID to
+                filter the search results. Defaults to None.
             top_k (int): The number of top similar documents to retrieve.
                 Defaults to 5.
-            filter (dict): Key / value dict for filtering
 
         Returns:
             Any: A list of documents retrieved from the vector store.
         """
         logger.info(
-            f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k={top_k}'"
+            f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k='{top_k}' for party_id='{party_id}'"
         )
-        return await self._vector_store.asimilarity_search(query=query,
-                                                           k=top_k,
-                                                           filter={"PartyID": party_id} if party_id else None)
+        cosmos_filter = None
+        if party_id is not None:
+            # Check the type and apply quotes for strings ---
+            if isinstance(party_id, (str, bytes)):
+                # If it's a string (like 'cpb'), enclose the value in single quotes.
+                cosmos_filter = f"c.metadata.partyId = '{party_id}'"
+            else:
+                # If it's a number (like 16), use the value directly.
+                cosmos_filter = f"c.metadata.partyId = {party_id}"
+
+            return await asyncio.to_thread(
+                self._vector_store.similarity_search,
+                query=query,
+                k=top_k,
+                where=cosmos_filter
+            )
+        else:
+            return await asyncio.to_thread(
+                self._vector_store.similarity_search,
+                query=query,
+                k=top_k
+            )
 
 
 def initiate_cosmosdb_vectorstore(documents: list[Document]) -> Any:
