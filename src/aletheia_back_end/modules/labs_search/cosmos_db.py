@@ -128,7 +128,7 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
             f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k='{top_k}' for party_id='{party_id}'"
         )
         cosmos_filter = None
-        if party_id is not None:
+        if party_id:
             # Check the type and apply quotes for strings ---
             if isinstance(party_id, (str, bytes)):
                 # If it's a string (like 'cpb'), enclose the value in single quotes.
