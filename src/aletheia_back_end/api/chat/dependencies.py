@@ -33,8 +33,6 @@ async def get_basic_auth_user(
             the expected values, and includes the 'WWW-Authenticate' header to
             prompt client login.
     """
-
-    # In a real application, you'd use a secure HASH/SALT comparison
     valid_username = credentials.username == settings.basic_auth_username
     valid_password = credentials.password == settings.basic_auth_password
 

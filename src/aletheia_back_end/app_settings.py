@@ -10,7 +10,7 @@ from azure.cosmos import PartitionKey
 
 class Settings(BaseSettings):
     """Default settings."""
-    # FastAPI credentials
+    # Authentication credentials
     basic_auth_username: str = ""
     basic_auth_password: str = ""
 
