@@ -4,7 +4,7 @@ from fastapi import HTTPException, Query, status, Depends
 from fastapi.routing import APIRouter
 from typing import Any, Optional
 
-from aletheia_back_end.api.chat.dependencies import AuthUser
+from aletheia_back_end.auth.utils import AuthUser
 from aletheia_back_end.utils.logging_config import get_configured_logger
 from aletheia_back_end.utils.utils import get_config_rag_workflow_app
 
