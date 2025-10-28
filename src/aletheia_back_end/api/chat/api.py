@@ -4,6 +4,7 @@ from fastapi import HTTPException, Query, status, Depends
 from fastapi.routing import APIRouter
 from typing import Any, Optional
 
+from aletheia_back_end.api.chat.dependencies import AuthUser
 from aletheia_back_end.utils.logging_config import get_configured_logger
 from aletheia_back_end.utils.utils import get_config_rag_workflow_app
 
@@ -24,21 +25,28 @@ __all__: list[str] = ["chat_router"]
     description="Post chat.",
 )
 async def post_chat(request: ChatIn,
+                    auth_user: AuthUser,
                     rag_workflow_app: Any = Depends(get_config_rag_workflow_app),
                     party_id: Optional[str | int] = Query(None, description="Optional political party ID")
 ) -> ChatOut:
     """Endpoint for Aletheia chat. Handles incoming chat requests, retrieves
     relevant documents, and generates a response using an LLM.
 
-    This asynchronous function processes a chat input, extracts the user's
-    query and optional party_id. The RAG workflow is then run where a
-    similarity search is perfomed on the vector store to retrieve relevant
-    documents, a context is constructed from these documents, and an LLM
-    generates a response.
+    This asynchronous function first authenticates the user. Upon successful
+    authentication, it processes a chat input, extracts the user's query and
+    optional party_id. The RAG workflow is then run where a similarity search
+    is perfomed on the vector store to retrieve relevant documents, a context
+    is constructed from these documents, and an LLM generates a response.
 
     Args:
         request (ChatIn): A ChatIn object containing the user's messages and
             context overrides.
+        auth_user (AuthUser): The authenticated username, ensuring the request
+            is authorized before processing.
+        rag_workflow_app (Any): Dependency to retrieve the configured RAG
+            workflow application instance.
+        party_id (Optional[str | int]): Optional political party ID to filter
+            context retrieval.
 
     Returns:
         ChatOut: A ChatOut object containing the AI's response. This will
@@ -46,8 +54,11 @@ async def post_chat(request: ChatIn,
             processing.
 
     Raises:
-        HTTPException: If the input query is empty (status code 400).
+        HTTPException: If the authentication fails (status code 401) or
+            if the input query is empty (status code 400).
     """
+    logger.info("Chat requested by authenticated user: %s", auth_user)
+
     try:
         query = request.messages[0].content
 
