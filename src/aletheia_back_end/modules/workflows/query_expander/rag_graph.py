@@ -98,20 +98,20 @@ def get_compiled_workflow(
 
 # Instantiate the RAG workflow
 def get_rag_workflow_app() -> Any:
-    components_config = load_workflow_core_components_config(settings.query_expander_workflow_config_path)
-    nodes_config = load_nodes_config(settings.query_expander_workflow_config_path)
+    components_config = load_workflow_core_components_config(path=settings.query_expander_workflow_config_path)
+    nodes_config = load_nodes_config(path=settings.query_expander_workflow_config_path)
 
     # Get the config values from the YAML file
-    llm_client = build_llm_client(components_config["llm"])
+    llm_client = build_llm_client(config=components_config["llm"])
     llm = llm_client.llm
 
-    vector_store = build_vector_store(components_config["vector_store"])
-    retriever = build_retriever(components_config["retriever"], llm, vector_store)
-    query_processor = build_query_processor(components_config["query_processor"], llm)
-    reranker = build_reranker(components_config["reranker"], llm)
+    vector_store = build_vector_store(config=components_config["vector_store"])
+    retriever = build_retriever(config=components_config["retriever"], vector_store=vector_store, llm=llm)
+    query_processor = build_query_processor(config=components_config["query_processor"], llm=llm)
+    reranker = build_reranker(config=components_config["reranker"], llm=llm)
 
     generate_node_prompt = nodes_config["generate_node"]["prompt"]
     num_queries = components_config["query_processor"]["params"]["num_queries"]
 
-    return get_compiled_workflow(llm_client, retriever, query_processor,
-                                 reranker, num_queries, generate_node_prompt)
+    return get_compiled_workflow(llm_client=llm_client, retriever=retriever, query_processor=query_processor,
+                                 reranker=reranker, num_queries=num_queries, prompt=generate_node_prompt)
