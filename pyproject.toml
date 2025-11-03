@@ -16,7 +16,7 @@ classifiers = [
 Changelog = "https://github.com/Thaleria_Labs/aletheia-back-end/releases"
 
 [tool.poetry.dependencies]
-python = "~3.11.4"
+python = "~3.13.3"
 fastapi = "^0.115.12"
 langchain = "^0.3.25"
 uvicorn = "^0.34.3"
