@@ -1,8 +1,6 @@
 name: Auto-Approve & Merge Dependabot
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]  # Triggers a PR in the current branch, no need to define target-branch
+on: pull_request_target  # Triggers on PR open/reopen/sync; use _target for write access
 
 permissions:
   contents: write
@@ -13,20 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'  # Only Dependabot PRs
     steps:
-      - name: Checkout PR code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
       - name: Fetch metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2  # Extracts update type (patch/minor/major), dep name
-
-      - name: Debug Log
-        run: |
-          echo "PR: ${{ github.event.pull_request.html_url }}"
-          echo "Type: ${{ steps.metadata.outputs.update-type }}"
-          echo "Dep: ${{ steps.metadata.outputs.dependency-name }}"
 
       # - name: Approve a PR if it's low-risk
       #   if: steps.metadata.outputs.update-type == 'patch' || steps.metadata.outputs.update-type == 'minor'  # Not majors
