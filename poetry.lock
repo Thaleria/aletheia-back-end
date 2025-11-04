@@ -134,7 +134,6 @@ files = [
 
 [package.dependencies]
 frozenlist = ">=1.1.0"
-typing-extensions = {version = ">=4.2", markers = "python_version < \"3.13\""}
 
 [[package]]
 name = "annotated-types"
@@ -163,7 +162,6 @@ files = [
 [package.dependencies]
 idna = ">=2.8"
 sniffio = ">=1.1"
-typing_extensions = {version = ">=4.5", markers = "python_version < \"3.13\""}
 
 [package.extras]
 trio = ["trio (>=0.26.1)"]
@@ -570,14 +568,14 @@ markers = {main = "platform_system == \"Windows\"", dev = "platform_system == \"
 
 [[package]]
 name = "colorlog"
-version = "6.9.0"
+version = "6.10.1"
 description = "Add colours to the output of Python's logging module."
 optional = false
 python-versions = ">=3.6"
 groups = ["dev"]
 files = [
-    {file = "colorlog-6.9.0-py3-none-any.whl", hash = "sha256:5906e71acd67cb07a71e779c47c4bcb45fb8c2993eebe9e5adcd6a6f1b283eff"},
-    {file = "colorlog-6.9.0.tar.gz", hash = "sha256:bfba54a1b93b94f54e1f4fe48395725a3d92fd2a4af702f6bd70946bdc0c6ac2"},
+    {file = "colorlog-6.10.1-py3-none-any.whl", hash = "sha256:2d7e8348291948af66122cff006c9f8da6255d224e7cf8e37d8de2df3bad8c9c"},
+    {file = "colorlog-6.10.1.tar.gz", hash = "sha256:eb4ae5cb65fe7fec7773c2306061a8e63e02efc2c72eba9d27b0fa23c94f1321"},
 ]
 
 [package.dependencies]
@@ -1029,7 +1027,7 @@ description = "Lightweight in-process concurrent programming"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "python_version < \"3.14\" and (platform_machine == \"aarch64\" or platform_machine == \"ppc64le\" or platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"win32\" or platform_machine == \"WIN32\")"
+markers = "platform_machine == \"aarch64\" or platform_machine == \"ppc64le\" or platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"win32\" or platform_machine == \"WIN32\""
 files = [
     {file = "greenlet-3.2.3-cp310-cp310-macosx_11_0_universal2.whl", hash = "sha256:1afd685acd5597349ee6d7a88a8bec83ce13c106ac78c196ee9dde7c04fe87be"},
     {file = "greenlet-3.2.3-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:761917cac215c61e9dc7324b2606107b3b292a8349bdebb31503ab4de3f559ac"},
@@ -1432,10 +1430,7 @@ azure-cosmos = ">=4.9.0,<5.0.0"
 azure-identity = ">=1.15.0,<2.0.0"
 langchain-core = ">=0.3.0,<0.4.0"
 langchain-openai = ">=0.3.0,<0.4.0"
-numpy = [
-    {version = ">=1.26.2", markers = "python_version < \"3.13\""},
-    {version = ">=2.1.0", markers = "python_version >= \"3.13\""},
-]
+numpy = {version = ">=2.1.0", markers = "python_version >= \"3.13\""}
 
 [package.extras]
 opentelemetry = ["azure-monitor-opentelemetry (>=1.6.4,<2.0.0)", "opentelemetry-instrumentation-threading (>=0.49b2,<0.50)", "opentelemetry-semantic-conventions-ai (>=0.4.2,<0.5.0)"]
@@ -1459,10 +1454,7 @@ httpx-sse = ">=0.4.0,<1.0.0"
 langchain = ">=0.3.26,<1.0.0"
 langchain-core = ">=0.3.66,<1.0.0"
 langsmith = ">=0.1.125"
-numpy = [
-    {version = ">=1.26.2", markers = "python_version < \"3.13\""},
-    {version = ">=2.1.0", markers = "python_version >= \"3.13\""},
-]
+numpy = {version = ">=2.1.0", markers = "python_version >= \"3.13\""}
 pydantic-settings = ">=2.4.0,<3.0.0"
 PyYAML = ">=5.3"
 requests = ">=2,<3"
@@ -3063,7 +3055,7 @@ description = "C version of reader, parser and emitter for ruamel.yaml derived f
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
-markers = "platform_python_implementation == \"CPython\" and python_version < \"3.14\""
+markers = "platform_python_implementation == \"CPython\""
 files = [
     {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-macosx_13_0_arm64.whl", hash = "sha256:11f891336688faf5156a36293a9c362bdc7c88f03a8a027c2c1d8e0bcde998e5"},
     {file = "ruamel.yaml.clib-0.2.12-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:a606ef75a60ecf3d924613892cc603b154178ee25abb3055db5062da811fd969"},
@@ -3987,4 +3979,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11, <3.15"
-content-hash = "31ad0b9f0f35b660b440c924e429b5ba7a45038eed3567e39604d740339612f1"
+content-hash = "6c41f32033a1d7db8b82a85d12d8142c018a4969fc89785757a4cfaaec89940f"
