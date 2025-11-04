@@ -31,32 +31,37 @@ jobs:
         uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{ matrix.python }}
-
-      - name: Upgrade pip
+      
+      - name: Upgrade pip & tools
         run: |
-          pip install --constraint=.github/workflows/constraints.txt pip
-          pip --version
+          python -m pip install --upgrade pip setuptools wheel
+          pip install nox nox-poetry
 
-      - name: Upgrade pip in virtual environments
-        shell: python
-        run: |
-          import os
-          import pip
+      # - name: Upgrade pip
+      #   run: |
+      #     pip install --constraint=.github/workflows/constraints.txt pip
+      #     pip --version
 
-          with open(os.environ["GITHUB_ENV"], mode="a") as io:
-              print(f"VIRTUALENV_PIP={pip.__version__}", file=io)
+      # - name: Upgrade pip in virtual environments
+      #   shell: python
+      #   run: |
+      #     import os
+      #     import pip
 
-      - name: Install Poetry
-        run: |
-          pipx install --pip-args=--constraint=.github/workflows/constraints.txt poetry
-          pipx inject --pip-args=--constraint=.github/workflows/constraints.txt poetry poetry-plugin-export
-          poetry --version
+      #     with open(os.environ["GITHUB_ENV"], mode="a") as io:
+      #         print(f"VIRTUALENV_PIP={pip.__version__}", file=io)
 
-      - name: Install Nox
-        run: |
-          pipx install --pip-args=--constraint=.github/workflows/constraints.txt nox
-          pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
-          nox --version
+      # - name: Install Poetry
+      #   run: |
+      #     pipx install --pip-args=--constraint=.github/workflows/constraints.txt poetry
+      #     pipx inject --pip-args=--constraint=.github/workflows/constraints.txt poetry poetry-plugin-export
+      #     poetry --version
+
+      # - name: Install Nox
+      #   run: |
+      #     pipx install --pip-args=--constraint=.github/workflows/constraints.txt nox
+      #     pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
+      #     nox --version
 
       - name: Compute pre-commit cache key
         if: matrix.session == 'pre-commit'
