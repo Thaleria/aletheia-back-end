@@ -209,6 +209,40 @@ files = [
 cryptography = "*"
 
 [[package]]
+name = "azure-ai-agents"
+version = "1.2.0b6"
+description = "Microsoft Corporation Azure AI Agents Client Library for Python"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "azure_ai_agents-1.2.0b6-py3-none-any.whl", hash = "sha256:ce23ad8fb9791118905be1ec8eae5c907cca2e536a455f1d3b830062c72cf2a7"},
+    {file = "azure_ai_agents-1.2.0b6.tar.gz", hash = "sha256:d3c10848c3b19dec98a292f8c10cee4ba4aac1050d4faabf9c2e2456b727f528"},
+]
+
+[package.dependencies]
+azure-core = ">=1.30.0"
+isodate = ">=0.6.1"
+typing-extensions = ">=4.6.0"
+
+[[package]]
+name = "azure-ai-documentintelligence"
+version = "1.0.2"
+description = "Microsoft Azure AI Document Intelligence Client Library for Python"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "azure_ai_documentintelligence-1.0.2-py3-none-any.whl", hash = "sha256:e1fb446abbdeccc9759d897898a0fe13141ed29f9ad11fc705f951925822ed59"},
+    {file = "azure_ai_documentintelligence-1.0.2.tar.gz", hash = "sha256:4d75a2513f2839365ebabc0e0e1772f5601b3a8c9a71e75da12440da13b63484"},
+]
+
+[package.dependencies]
+azure-core = ">=1.30.0"
+isodate = ">=0.6.1"
+typing-extensions = ">=4.6.0"
+
+[[package]]
 name = "azure-ai-inference"
 version = "1.0.0b9"
 description = "Microsoft Azure AI Inference Client Library for Python"
@@ -229,6 +263,72 @@ typing-extensions = ">=4.6.0"
 [package.extras]
 opentelemetry = ["azure-core-tracing-opentelemetry"]
 prompts = ["pyyaml"]
+
+[[package]]
+name = "azure-ai-projects"
+version = "1.1.0b4"
+description = "Microsoft Azure AI Projects Client Library for Python"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "azure_ai_projects-1.1.0b4-py3-none-any.whl", hash = "sha256:d8aab84fd7cd7c5937e78141e37ca4473dc5ed6cce2c0490c634418abe14afea"},
+    {file = "azure_ai_projects-1.1.0b4.tar.gz", hash = "sha256:39e2f1396270b375069c2d9c82ccfe91c11384eca9f61d59adbc12fb6d6a32ca"},
+]
+
+[package.dependencies]
+azure-ai-agents = ">=1.2.0b3"
+azure-core = ">=1.30.0"
+azure-storage-blob = ">=12.15.0"
+isodate = ">=0.6.1"
+typing-extensions = ">=4.12.2"
+
+[[package]]
+name = "azure-ai-textanalytics"
+version = "5.3.0"
+description = "Microsoft Azure Text Analytics Client Library for Python"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "azure-ai-textanalytics-5.3.0.zip", hash = "sha256:4f7d067d5bb08422599ca6175510d39b0911c711301647e5f18e904a5027bf58"},
+    {file = "azure_ai_textanalytics-5.3.0-py3-none-any.whl", hash = "sha256:69bb736d93de81060e9075d42b6f0b92c25be0fb106da5cb6a6d30e772168221"},
+]
+
+[package.dependencies]
+azure-common = ">=1.1,<2.0"
+azure-core = ">=1.24.0,<2.0.0"
+isodate = ">=0.6.1,<1.0.0"
+typing-extensions = ">=4.0.1"
+
+[[package]]
+name = "azure-ai-vision-imageanalysis"
+version = "1.0.0"
+description = "Microsoft Azure Ai Vision Imageanalysis Client Library for Python"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "azure_ai_vision_imageanalysis-1.0.0-py3-none-any.whl", hash = "sha256:9a7e4aed611d8b4b5fbe528e4e56257d3543b26affe98914f5fd2c53381c264d"},
+    {file = "azure_ai_vision_imageanalysis-1.0.0.tar.gz", hash = "sha256:a79bbbb9c6992fef3be53395d339c9db850719583ef96ac64e054b00b545b3b6"},
+]
+
+[package.dependencies]
+azure-core = ">=1.30.0"
+isodate = ">=0.6.1"
+typing-extensions = ">=4.6.0"
+
+[[package]]
+name = "azure-common"
+version = "1.1.28"
+description = "Microsoft Azure Client Library for Python (Common)"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "azure-common-1.1.28.zip", hash = "sha256:4ac0cd3214e36b6a1b6a442686722a5d8cc449603aa833f3f0f40bda836704a3"},
+    {file = "azure_common-1.1.28-py2.py3-none-any.whl", hash = "sha256:5c12d3dcf4ec20599ca6b0d3e09e86e146353d443e7fcc050c9a19c1f9df20ad"},
+]
 
 [[package]]
 name = "azure-core"
@@ -301,6 +401,45 @@ cryptography = ">=2.5"
 msal = ">=1.30.0"
 msal-extensions = ">=1.2.0"
 typing-extensions = ">=4.0.0"
+
+[[package]]
+name = "azure-search-documents"
+version = "11.6.0"
+description = "Microsoft Azure Cognitive Search Client Library for Python"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "azure_search_documents-11.6.0-py3-none-any.whl", hash = "sha256:c3eb2deaf7926844e99a881830861225ef68e8b3bc067a76019e87fc7f5586dc"},
+    {file = "azure_search_documents-11.6.0.tar.gz", hash = "sha256:fcc807076ff82024be576ffccb0d0f3261e5c2a112a6666b86ec70bbdb2e1d64"},
+]
+
+[package.dependencies]
+azure-common = ">=1.1"
+azure-core = ">=1.28.0"
+isodate = ">=0.6.0"
+typing-extensions = ">=4.6.0"
+
+[[package]]
+name = "azure-storage-blob"
+version = "12.27.1"
+description = "Microsoft Azure Blob Storage Client Library for Python"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "azure_storage_blob-12.27.1-py3-none-any.whl", hash = "sha256:65d1e25a4628b7b6acd20ff7902d8da5b4fde8e46e19c8f6d213a3abc3ece272"},
+    {file = "azure_storage_blob-12.27.1.tar.gz", hash = "sha256:a1596cc4daf5dac9be115fcb5db67245eae894cf40e4248243754261f7b674a6"},
+]
+
+[package.dependencies]
+azure-core = ">=1.30.0"
+cryptography = ">=2.1.4"
+isodate = ">=0.6.1"
+typing-extensions = ">=4.6.0"
+
+[package.extras]
+aio = ["azure-core[aio] (>=1.30.0)"]
 
 [[package]]
 name = "certifi"
@@ -1465,28 +1604,34 @@ xai = ["langchain-xai"]
 
 [[package]]
 name = "langchain-azure-ai"
-version = "0.1.4"
+version = "0.1.6"
 description = "An integration package to support Azure AI Foundry capabilities for model inference in LangChain."
 optional = false
-python-versions = "<4.0,>=3.9"
+python-versions = "~=3.9"
 groups = ["main"]
 files = [
-    {file = "langchain_azure_ai-0.1.4-py3-none-any.whl", hash = "sha256:89d94472564203f9e032d9eb0a1c617960af7a5eb4310a344d6db5352afd409f"},
-    {file = "langchain_azure_ai-0.1.4.tar.gz", hash = "sha256:26e91cfa49ad3b64a858ed8501a591a5ecc2fac4fb4938283fb7ec63076f624e"},
+    {file = "langchain_azure_ai-0.1.6-py3-none-any.whl", hash = "sha256:bff927500e3117cbed1bc90d0d5d28d97024527dad83362e938f233e518f2593"},
+    {file = "langchain_azure_ai-0.1.6.tar.gz", hash = "sha256:163276b0d893163c276a88e32fe440f7f332e1ac339c35f604bebbdf0c25c636"},
 ]
 
 [package.dependencies]
-aiohttp = ">=3.10.0,<4.0.0"
-azure-ai-inference = {version = ">=1.0.0b7,<2.0.0", extras = ["opentelemetry"]}
-azure-core = ">=1.32.0,<2.0.0"
-azure-cosmos = ">=4.9.0,<5.0.0"
-azure-identity = ">=1.15.0,<2.0.0"
+aiohttp = ">=3.10,<4.0"
+azure-ai-agents = ">=1.0,<2.0"
+azure-ai-documentintelligence = ">=1.0.2,<2.0.0"
+azure-ai-inference = {version = ">=1.0.0b9,<2.0", extras = ["opentelemetry"]}
+azure-ai-projects = "1.1.0b4"
+azure-ai-textanalytics = ">=5.3.0,<6.0.0"
+azure-ai-vision-imageanalysis = ">=1.0.0,<2.0.0"
+azure-core = ">=1.32,<2.0"
+azure-cosmos = ">=4.14.0b1,<5.0"
+azure-identity = ">=1.15,<2.0"
+azure-search-documents = ">=11.4,<12.0"
 langchain-core = ">=0.3.0,<0.4.0"
 langchain-openai = ">=0.3.0,<0.4.0"
 numpy = {version = ">=2.1.0", markers = "python_version >= \"3.13\""}
 
 [package.extras]
-opentelemetry = ["azure-monitor-opentelemetry (>=1.6.4,<2.0.0)", "opentelemetry-instrumentation-threading (>=0.49b2,<0.50)", "opentelemetry-semantic-conventions-ai (>=0.4.2,<0.5.0)"]
+opentelemetry = ["azure-monitor-opentelemetry (>=1.6,<2.0)", "opentelemetry-instrumentation-threading (>=0.49b2,<0.50)", "opentelemetry-semantic-conventions-ai (>=0.4.2,<0.5.0)"]
 
 [[package]]
 name = "langchain-community"
