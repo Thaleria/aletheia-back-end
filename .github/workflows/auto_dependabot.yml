@@ -15,17 +15,16 @@ jobs:
         id: metadata
         uses: dependabot/fetch-metadata@v2  # Extracts update type (patch/minor/major), dep name
 
-      - name: Debug (remove later)
-        run: |
-          echo "Update type: ${{ steps.metadata.outputs.update-type }}"
-          echo "PR URL: ${{ github.event.pull_request.html_url }}"
-
       - name: PR update type verification
-        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
         run: |
-          echo " The update type is major, therefore no auto-approval or auto-merge will be performed."
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
+          UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          if [ "$UPDATE_TYPE" = "version-update:semver-major" ]; then
+            echo "The update type is major, therefore no auto-approval or auto-merge will be performed."
+          else
+            echo "Update type: $UPDATE_TYPE"
+            echo "PR URL: $PR_URL"
+          fi
 
       - name: Approve a PR if it's low-risk
         if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'  # Not majors
