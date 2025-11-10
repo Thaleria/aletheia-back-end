@@ -1782,14 +1782,14 @@ orjson = ">=3.10.1"
 
 [[package]]
 name = "langsmith"
-version = "0.4.41"
+version = "0.4.42"
 description = "Client library to connect to the LangSmith Observability and Evaluation Platform."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langsmith-0.4.41-py3-none-any.whl", hash = "sha256:5cdc554e5f0361bf791fdd5e8dea16d5ba9dfce09b3b8f8bba5e99450c569b27"},
-    {file = "langsmith-0.4.41.tar.gz", hash = "sha256:b88d03bb157cf69d1afee250a658d847003babbbd9647f720edcc9b03a0857cd"},
+    {file = "langsmith-0.4.42-py3-none-any.whl", hash = "sha256:015b0a0c17eb1a61293e8cbb7d41778a4b37caddd267d54274ba94e4721b301b"},
+    {file = "langsmith-0.4.42.tar.gz", hash = "sha256:a6e808e47581403cb019b47c8c10627c1644f78ed4c03fa877d6ad661476c38f"},
 ]
 
 [package.dependencies]
