@@ -20,7 +20,7 @@ name: Deploy Python project to Azure web app
 
 on:
   push:
-    branches: ["dev", "feat/depoyment"]
+    branches: ["dev", "feat/deployment"]
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'aletheia-back-end-test'  # set this to your function app name on Azure
