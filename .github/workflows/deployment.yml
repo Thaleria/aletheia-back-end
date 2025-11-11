@@ -46,12 +46,10 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
           package: ${{ env.WORKING_DIRECTORY }}
           startup-command: >
-            gunicorn --bind=0.0.0.0:$PORT
+            uvicorn aletheia_back_end.app:app
+            --host 0.0.0.0
+            --port $PORT
             --workers 4
-            --worker-class uvicorn.workers.UvicornWorker
-            --timeout 600
-            --access-logfile -
-            --error-logfile -
-            aletheia_back_end.app:app
+            --log-level info
         #   scm-do-build-during-deployment: true
         #   enable-oryx-build: true
