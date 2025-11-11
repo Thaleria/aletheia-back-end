@@ -45,6 +45,6 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
           package: ${{ env.WORKING_DIRECTORY }}
-          startup-command: ${{ env.STARTUP_COMMAND }}
+          startup-command: "gunicorn -w 2 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 aletheia_back_end.app:app"
         #   scm-do-build-during-deployment: true
         #   enable-oryx-build: true
