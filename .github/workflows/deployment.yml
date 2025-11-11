@@ -8,7 +8,6 @@ env:
   AZURE_WEBAPP_NAME: 'aletheia-back-end-test'  # App Service name
   WORKING_DIRECTORY: 'src'             # Deploy the src folder
   PYTHON_VERSION: '3.13'
-  STARTUP_COMMAND: 'uvicorn aletheia_back_end.app:app --host 0.0.0.0 --port 8000'  # set this to the startup command required to start the gunicorn server. default it is empty
 
 jobs:
   deploy:
@@ -45,4 +44,3 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
           package: ${{ env.WORKING_DIRECTORY }}
-          startup-command: ${{ env.STARTUP_COMMAND }}
