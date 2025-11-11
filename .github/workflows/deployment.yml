@@ -45,11 +45,6 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
           package: ${{ env.WORKING_DIRECTORY }}
-          startup-command: >
-            uvicorn aletheia_back_end.app:app
-            --host 0.0.0.0
-            --port $PORT
-            --workers 4
-            --log-level info
+          startup-command: ${{ env.STARTUP_COMMAND }}
         #   scm-do-build-during-deployment: true
         #   enable-oryx-build: true
