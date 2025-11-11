@@ -46,5 +46,3 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
           package: ${{ env.WORKING_DIRECTORY }}
           startup-command: ${{ env.STARTUP_COMMAND }}
-          scm-do-build-during-deployment: true
-          enable-oryx-build: true
