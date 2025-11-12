@@ -82,6 +82,7 @@ class BasicRetriever(RetrieverInterface):
         print(f"Performing similarity search for query: {query} to retrieve {k} documents about party_id: {party_id}")
         try:
             retrieved_docs = await self.vector_store.search(query, top_k=k, party_id=party_id)
+            print("retrieved_docs:", retrieved_docs)
             logger.debug(f"Debug: Retrieved {len(retrieved_docs)} documents")
             return retrieved_docs
         except Exception as e:
