@@ -4,7 +4,7 @@ aiosignal==1.4.0 ; python_full_version >= "3.13.3" and python_full_version < "3.
 annotated-types==0.7.0 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"
 anyio==4.10.0 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"
 attrs==25.3.0 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"
-azure-ai-agents==1.0.0b9 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"
+azure-ai-agents==1.2.0b6 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"
 azure-ai-documentintelligence==1.0.2 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"
 azure-ai-inference==1.0.0b9 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"
 azure-ai-projects==1.1.0b4 ; python_full_version >= "3.13.3" and python_full_version < "3.14.0"

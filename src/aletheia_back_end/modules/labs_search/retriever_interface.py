@@ -82,7 +82,15 @@ class BasicRetriever(RetrieverInterface):
         print(f"Performing similarity search for query: {query} to retrieve {k} documents about party_id: {party_id}")
         try:
             retrieved_docs = await self.vector_store.search(query, top_k=k, party_id=party_id)
-            print("retrieved_docs:", retrieved_docs)
+            # Debug printing
+            print(f"Type of retrieved_docs: {type(retrieved_docs)}")
+            print(f"Length of retrieved_docs: {len(retrieved_docs)}")
+            if retrieved_docs:
+                print(f"Type of first doc: {type(retrieved_docs[0])}")
+                print(f"First doc content: {retrieved_docs[0]}")
+                if hasattr(retrieved_docs[0], '__dict__'):
+                    print(f"First doc attributes: {retrieved_docs[0].__dict__}")
+            # print("retrieved_docs:", retrieved_docs)
             logger.debug(f"Debug: Retrieved {len(retrieved_docs)} documents")
             return retrieved_docs
         except Exception as e:
