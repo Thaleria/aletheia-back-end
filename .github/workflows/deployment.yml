@@ -2,7 +2,7 @@ name: Deploy Python project to Azure Web App
 
 on:
   push:
-    branches: ["dev", "feat/deployment"]
+    branches: ["dev"]
 
 env:
   AZURE_WEBAPP_NAME: 'aletheia-back-end-test'  # App Service name
@@ -21,22 +21,6 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-        
-     # install dependencies
-    #   - name: python install venv and dependencies
-    #     working-directory: ${{ env.WORKING_DIRECTORY }}
-    #     run: |
-    #         sudo apt install python${{ env.PYTHON_VERSION }}-venv
-    #         python -m venv --copies antenv
-    #         source antenv/bin/activate
-    #         pip install setuptools
-    #         pip install -r requirements.txt
-
-    # To use Azure RBAC instead of Publish Profile, uncomment the task below
-        # - name: 'Login via Azure CLI'
-        # uses: azure/login@v1
-        # with:
-        #     creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }} # set up AZURE_RBAC_CREDENTIALS secrets in your repository
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
