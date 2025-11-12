@@ -129,7 +129,7 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
         )
         cosmos_filter = None
         if party_id:
-            try:
+            try:  # TODO: This is a temporary fix as the DB has both string and integer party IDs. When that's corrected, this should be simplified
                 # If the party_id can be converted to an integer, do so. If party_id is already an integer, it will go through smoothly.
                 party_id = int(party_id)
                 # If it's a number (like 16), use the value directly.
