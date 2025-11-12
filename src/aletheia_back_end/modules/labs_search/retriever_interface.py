@@ -79,6 +79,7 @@ class BasicRetriever(RetrieverInterface):
         k = k if k is not None else self.top_k
         # This vector_store uses the search function from the abstract class, which then uses the similarity search function of Cosmos DB
         logger.info(f"Performing similarity search for query: {query} to retrieve {k} documents about party_id: {party_id}")
+        print(f"Performing similarity search for query: {query} to retrieve {k} documents about party_id: {party_id}")
         try:
             retrieved_docs = await self.vector_store.search(query, top_k=k, party_id=party_id)
             logger.debug(f"Debug: Retrieved {len(retrieved_docs)} documents")

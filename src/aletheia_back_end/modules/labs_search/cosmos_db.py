@@ -128,6 +128,7 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
             f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k='{top_k}' for party_id='{party_id}'"
         )
         cosmos_filter = None
+        print(f"party_id to search for: {party_id}")
         if party_id:
             # Check the type and apply quotes for strings ---
             if isinstance(party_id, (str, bytes)):
@@ -144,6 +145,7 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
                 where=cosmos_filter
             )
         else:
+            print(f"No party_id: {party_id}")
             return await asyncio.to_thread(
                 self._vector_store.similarity_search,
                 query=query,
