@@ -1789,14 +1789,14 @@ orjson = ">=3.10.1"
 
 [[package]]
 name = "langsmith"
-version = "0.4.42"
+version = "0.4.43"
 description = "Client library to connect to the LangSmith Observability and Evaluation Platform."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "langsmith-0.4.42-py3-none-any.whl", hash = "sha256:015b0a0c17eb1a61293e8cbb7d41778a4b37caddd267d54274ba94e4721b301b"},
-    {file = "langsmith-0.4.42.tar.gz", hash = "sha256:a6e808e47581403cb019b47c8c10627c1644f78ed4c03fa877d6ad661476c38f"},
+    {file = "langsmith-0.4.43-py3-none-any.whl", hash = "sha256:c97846a0b15061bc15844aac32fd1ce4a8e50983905f80a0d6079bb41b112ae3"},
+    {file = "langsmith-0.4.43.tar.gz", hash = "sha256:75c2468ab740438adfb32af8595ad8837c3af2bd1cdaf057d534182c5a07407a"},
 ]
 
 [package.dependencies]
@@ -3371,6 +3371,8 @@ files = [
     {file = "ruamel.yaml.clib-0.2.14-cp39-cp39-win32.whl", hash = "sha256:6d5472f63a31b042aadf5ed28dd3ef0523da49ac17f0463e10fda9c4a2773352"},
     {file = "ruamel.yaml.clib-0.2.14-cp39-cp39-win_amd64.whl", hash = "sha256:8dd3c2cc49caa7a8d64b67146462aed6723a0495e44bf0aa0a2e94beaa8432f6"},
     {file = "ruamel.yaml.clib-0.2.14.tar.gz", hash = "sha256:803f5044b13602d58ea378576dd75aa759f52116a0232608e8fdada4da33752e"},
+    {file = "ruamel_yaml_clib-0.2.14-cp314-cp314-win32.whl", hash = "sha256:9b4104bf43ca0cd4e6f738cb86326a3b2f6eef00f417bd1e7efb7bdffe74c539"},
+    {file = "ruamel_yaml_clib-0.2.14-cp314-cp314-win_amd64.whl", hash = "sha256:13997d7d354a9890ea1ec5937a219817464e5cc344805b37671562a401ca3008"},
 ]
 
 [[package]]
