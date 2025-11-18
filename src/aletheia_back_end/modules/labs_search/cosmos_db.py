@@ -129,13 +129,14 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
         )
         cosmos_filter = None
         if party_id:
-            # Check the type and apply quotes for strings ---
-            if isinstance(party_id, (str, bytes)):
-                # If it's a string (like 'cpb'), enclose the value in single quotes.
-                cosmos_filter = f"c.metadata.partyId = '{party_id}'"
-            else:
+            try:  # TODO: This is a temporary fix as the DB has both string and integer party IDs. When that's corrected, this should be simplified
+                # If the party_id can be converted to an integer, do so. If party_id is already an integer, it will go through smoothly.
+                party_id = int(party_id)
                 # If it's a number (like 16), use the value directly.
                 cosmos_filter = f"c.metadata.partyId = {party_id}"
+            except ValueError:
+                # If it's a string (like 'cpb'), enclose the value in single quotes.
+                cosmos_filter = f"c.metadata.partyId = '{party_id}'"
 
             return await asyncio.to_thread(
                 self._vector_store.similarity_search,
@@ -143,6 +144,7 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
                 k=top_k,
                 where=cosmos_filter
             )
+
         else:
             return await asyncio.to_thread(
                 self._vector_store.similarity_search,

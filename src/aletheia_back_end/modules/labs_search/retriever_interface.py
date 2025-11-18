@@ -84,7 +84,7 @@ class BasicRetriever(RetrieverInterface):
             logger.debug(f"Debug: Retrieved {len(retrieved_docs)} documents")
             return retrieved_docs
         except Exception as e:
-            logger.error(f"Similarity search failed: {e}")
+            logger.error(f"Similarity search failed: {e}", exc_info=True)
             return []
 
     def build_rag_context(self, documents: list[Document]) -> str:
