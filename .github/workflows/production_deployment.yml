@@ -1,8 +1,8 @@
-name: Deploy Python project to Azure Web App
+name: Deploy Python project to Production in Azure Web App
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
 
 env:
   AZURE_WEBAPP_NAME: 'aletheia-back-end-test'  # App Service name
@@ -12,7 +12,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,5 +26,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_WEB_APP_PUBLISH_PROFILE_PRODUCTION }}
           package: ${{ env.WORKING_DIRECTORY }}
