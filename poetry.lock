@@ -1682,14 +1682,14 @@ tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10"
 
 [[package]]
 name = "langchain-core"
-version = "0.3.82"
+version = "0.3.83"
 description = "Building applications with LLMs through composability"
 optional = false
 python-versions = "<4.0.0,>=3.9.0"
 groups = ["main"]
 files = [
-    {file = "langchain_core-0.3.82-py3-none-any.whl", hash = "sha256:e7e1c786229b35ed0e710852b08ceff6cf0db9635fd45b1c04d91b9eb75099b8"},
-    {file = "langchain_core-0.3.82.tar.gz", hash = "sha256:00025f369344d4f983cdc56fcad7cbd6fb73f8cccbc37d5cee93b21994588d5e"},
+    {file = "langchain_core-0.3.83-py3-none-any.whl", hash = "sha256:8c92506f8b53fc1958b1c07447f58c5783eb8833dd3cb6dc75607c80891ab1ae"},
+    {file = "langchain_core-0.3.83.tar.gz", hash = "sha256:a0a4c7b6ea1c446d3b432116f405dc2afa1fe7891c44140d3d5acca221909415"},
 ]
 
 [package.dependencies]
@@ -1700,6 +1700,7 @@ pydantic = ">=2.7.4,<3.0.0"
 PyYAML = ">=5.3.0,<7.0.0"
 tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10.0.0"
 typing-extensions = ">=4.7.0,<5.0.0"
+uuid-utils = ">=0.12.0,<1.0"
 
 [[package]]
 name = "langchain-openai"
