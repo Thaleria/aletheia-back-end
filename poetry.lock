@@ -401,14 +401,14 @@ opentelemetry-api = ">=1.12.0"
 
 [[package]]
 name = "azure-cosmos"
-version = "4.14.3"
+version = "4.14.5"
 description = "Microsoft Azure Cosmos Client Library for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "azure_cosmos-4.14.3-py3-none-any.whl", hash = "sha256:67b20403520ecfddb23067caf3d4161a466823e36e63ef666f6bc2c079b03a88"},
-    {file = "azure_cosmos-4.14.3.tar.gz", hash = "sha256:ae84aa0438dfcf8b8d6dec22dc7ce5219645321f37cddb50a13c84b69675f0bc"},
+    {file = "azure_cosmos-4.14.5-py3-none-any.whl", hash = "sha256:1a50d2019f81380b4cf35aff881290607ff1bf1287611abf067a965b9ea46f5d"},
+    {file = "azure_cosmos-4.14.5.tar.gz", hash = "sha256:3239a605fe29c94b77391826773aa3d0d9bbe4b93903fce5b6434b0f32742ba7"},
 ]
 
 [package.dependencies]
