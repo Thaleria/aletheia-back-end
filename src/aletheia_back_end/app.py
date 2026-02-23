@@ -8,7 +8,7 @@ from aletheia_back_end.utils.logging_config import get_configured_logger
 
 app: FastAPI = FastAPI()
 app.include_router(chat_router)
-# app.include_router(lfc_router)
+app.include_router(lfc_router)
 
 if __name__ == "__main__":
     import uvicorn
