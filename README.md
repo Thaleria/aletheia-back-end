@@ -1,70 +1,40 @@
-# CKB Back End
+# Aletheia Back End
 
-[![PyPI](https://img.shields.io/pypi/v/ckb-back-end.svg)][pypi status]
-[![Status](https://img.shields.io/pypi/status/ckb-back-end.svg)][pypi status]
-[![Python Version](https://img.shields.io/pypi/pyversions/ckb-back-end)][pypi status]
-[![License](https://img.shields.io/pypi/l/ckb-back-end)][license]
+This project contains the back end of **Aletheia** / **Emma**, an automated fact-checking tool that uses artificial intelligence (AI) to significantly shorten the time between the spread of misinformation and its rebuttal. Emma does not act as a new source of facts, but as an instrument that unlocks existing, verified information sources.
 
-[![Read the documentation at https://ckb-back-end.readthedocs.io/](https://img.shields.io/readthedocs/ckb-back-end/latest.svg?label=Read%20the%20Docs)][read the docs]
-[![Tests](https://github.com/Thaleria_Labs/ckb-back-end/workflows/Tests/badge.svg)][tests]
-[![Codecov](https://codecov.io/gh/Thaleria_Labs/ckb-back-end/branch/main/graph/badge.svg)][codecov]
+![Aletheia logo](https://raw.githubusercontent.com/Thaleria/aletheia-back-end/main/aletheia.jpg "Aletheia")
 
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
-[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
+## Context
 
-[pypi status]: https://pypi.org/project/ckb-back-end/
-[read the docs]: https://ckb-back-end.readthedocs.io/
-[tests]: https://github.com/Thaleria_Labs/ckb-back-end/actions?workflow=Tests
-[codecov]: https://app.codecov.io/gh/Thaleria_Labs/ckb-back-end
-[pre-commit]: https://github.com/pre-commit/pre-commit
-[black]: https://github.com/psf/black
+In public and political debate, statements are regularly made that are incorrect or deviate from earlier positions, the voting behavior of political parties, or the scientific consensus as documented, for example, by CBS and CPB. This can lead to confusion and disrupt the debate.
 
-## Features
+## What Aletheia Does
 
-- TODO
+Emma offers a solution by quickly and effectively identifying misinformation and providing context, so that societal dialogue remains based on facts and reliable information. Initially, Emma analyzes debates in the Dutch House of Representatives (Tweede Kamer). Over time, this will be expanded to the broader public and political debate.
 
-## Requirements
+By making this data available in real time and presenting it where it is most needed, Emma provides fast and reliable support in debates and decision-making processes. The ultimate goal is to better equip society against the harmful effects of misinformation and contribute to a fact-based public and political dialogue.
 
-- TODO
+## Project Structure
 
-## Installation
-
-You can install _CKB Back End_ via [pip] from [PyPI]:
-
-```console
-$ pip install ckb-back-end
+```text
+.
+|-- README.md
+|-- pyproject.toml
+|-- poetry.lock
+|-- noxfile.py
+|-- src/
+|   `-- aletheia_back_end/
+|       |-- api/
+|       |-- middelware/
+|       |-- modules/
+|       |-- utils/
+|       |-- app.py
+|       |-- app_settings.py
+|       `-- global_settings.py
+|-- tests/
+`-- logs/
 ```
-
-## Usage
-
-Please see the [Command-line Reference] for details.
-
-## Contributing
-
-Contributions are very welcome.
-To learn more, see the [Contributor Guide].
 
 ## License
 
-Distributed under the terms of the [GPL 3.0 license][license],
-_CKB Back End_ is free and open source software.
-
-## Issues
-
-If you encounter any problems,
-please [file an issue] along with a detailed description.
-
-## Credits
-
-Project template derived from [Hypermodern Python Cookiecutter] .
-
-[pypi]: https://pypi.org/
-[hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
-[file an issue]: https://github.com/Thaleria_Labs/ckb-back-end/issues
-[pip]: https://pip.pypa.io/
-
-<!-- github-only -->
-
-[license]: https://github.com/Thaleria_Labs/ckb-back-end/blob/main/LICENSE
-[contributor guide]: https://github.com/Thaleria_Labs/ckb-back-end/blob/main/CONTRIBUTING.md
-[command-line reference]: https://ckb-back-end.readthedocs.io/en/latest/usage.html
+Licensed under the Apache License, Version 2.0. See `LICENSE`.
