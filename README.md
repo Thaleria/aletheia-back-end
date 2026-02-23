@@ -8,7 +8,7 @@ This project contains the back end of **Aletheia** / **Emma**, an automated fact
 
 In public and political debate, statements are regularly made that are incorrect or deviate from earlier positions, the voting behavior of political parties, or the scientific consensus as documented, for example, by CBS and CPB. This can lead to confusion and disrupt the debate.
 
-## What Emma Does
+## What Aletheia Does
 
 Emma offers a solution by quickly and effectively identifying misinformation and providing context, so that societal dialogue remains based on facts and reliable information. Initially, Emma analyzes debates in the Dutch House of Representatives (Tweede Kamer). Over time, this will be expanded to the broader public and political debate.
 
