@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    target-branch: "dev"  # The default is main, to set a different target branch, specify it here
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directory: "/.github/workflows"
+    target-branch: "dev"
+    schedule:
+      interval: weekly
+    groups:
+      github-workflows:
+        patterns:
+          - "*"
+  - package-ecosystem: pip
+    directory: "/"
+    target-branch: "dev"
+    schedule:
+      interval: weekly
+    versioning-strategy: lockfile-only
+    allow:
+      - dependency-type: "all"

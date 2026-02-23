@@ -1,6 +1,7 @@
 """Vector store abstract class for vector store providers."""
 
 from abc import ABC, abstractmethod
+from typing import Optional
 
 # Assuming LangChain's Document will be passed around.
 # If you want to completely decouple, you'd define your own DocumentChunk class here as well.
@@ -14,12 +15,14 @@ class VectorStoreInterface(ABC):
     """
 
     @abstractmethod
-    async def search(self, query: str, top_k: int = 5) -> list[Document]:
+    async def search(self, query: str, party_id: Optional[str | int], top_k: int = 5) -> list[Document]:
         """Performs a similarity search in the vector store and retrieves the
         top_k documents.
 
         Args:
             query (str): The user's query string.
+            party_id (Optional[str | int]): The political party ID to filter
+                documents. If None, no filtering is applied.
             top_k (int): The number of top relevant documents to retrieve.
                 Defaults to 5.
 

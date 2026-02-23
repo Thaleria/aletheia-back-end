@@ -5,10 +5,11 @@ from langgraph.graph import StateGraph, END
 from functools import partial
 from typing import Any
 from aletheia_back_end.app_settings import settings
-from aletheia_back_end.modules.workflows.rag.nodes import retrieve_node, generate_node
+from aletheia_back_end.modules.workflows.query_expander.nodes import expand_queries_node, retrieve_node, gather_and_rerank_node, generate_node
 from aletheia_back_end.modules.labs_nlp.llm_client_interface import LLMClientInterface
 from aletheia_back_end.modules.labs_nlp.query_processor_interface import QueryProcessor
 from aletheia_back_end.modules.labs_search.retriever_interface import RetrieverInterface
+from aletheia_back_end.modules.labs_search.reranker_interface import RerankerInterface
 
 from aletheia_back_end.utils.config_builders import (
     load_workflow_core_components_config,
@@ -17,6 +18,7 @@ from aletheia_back_end.utils.config_builders import (
     build_vector_store,
     build_retriever,
     build_query_processor,
+    build_reranker
 )
 
 
@@ -24,6 +26,8 @@ def get_compiled_workflow(
     llm_client: LLMClientInterface,
     retriever: RetrieverInterface,
     query_processor: QueryProcessor,
+    reranker: RerankerInterface,
+    num_queries: int,
     prompt: str
 ) -> Any:
     """Creates and returns a compiled LangGraph workflow for RAG.
@@ -40,6 +44,8 @@ def get_compiled_workflow(
         query_processor (QueryProcessor): An initialized query processor
             adhering to the `QueryProcessor` interface, used for transforming
             the input query.
+        num_queries (int): The number of expanded queries to generate.
+        prompt (str): The prompt template to be used in the generate node.
 
     Returns:
         Any: A compiled LangGraph application instance, ready to be invoked.
@@ -49,20 +55,40 @@ def get_compiled_workflow(
 
     # Add nodes using functools.partial to pass the external dependencies
     workflow.add_node(
-        "retrieve_node",
-        partial(retrieve_node, retriever=retriever, query_processor=query_processor)
+        "expand_queries_node",
+        partial(expand_queries_node, query_processor=query_processor)
     )
+
+    # For each expanded query, retrieve info from the vector store
+    for i in range(num_queries):
+        node_name = f"retrieve_branch_{i}"
+        workflow.add_node(
+            node_name,
+            partial(retrieve_node, index=i, retriever=retriever)
+        )
+
+    # rerank the different contexts retrieved for each node and gather them into one context. Rerank its importance based on the original query
+    workflow.add_node(
+        "gather_and_rerank_node",
+        partial(gather_and_rerank_node, reranker=reranker)
+    )
+
+    # Final node, which generates the output based on the gathered context
     workflow.add_node(
         "generate_node",
         partial(generate_node, llm_client=llm_client, prompt=prompt)
     )
 
     # Set up edges
-    workflow.add_edge("retrieve_node", "generate_node")
+    for i in range(num_queries):
+        # By using add_edge (node A-> node B, node A-> node C ...etc) the nodes run in parallel.
+        workflow.add_edge("expand_queries_node", f"retrieve_branch_{i}")
+        workflow.add_edge(f"retrieve_branch_{i}", "gather_and_rerank_node")
+    workflow.add_edge("gather_and_rerank_node", "generate_node")
     workflow.add_edge("generate_node", END)
 
     # Set the entry point
-    workflow.set_entry_point("retrieve_node")
+    workflow.set_entry_point("expand_queries_node")
 
     # Compile the graph
     app = workflow.compile()
@@ -72,8 +98,8 @@ def get_compiled_workflow(
 
 # Instantiate the RAG workflow
 def get_rag_workflow_app() -> Any:
-    components_config = load_workflow_core_components_config(path=settings.rag_workflow_config_path)
-    nodes_config = load_nodes_config(path=settings.rag_workflow_config_path)
+    components_config = load_workflow_core_components_config(path=settings.query_expander_workflow_config_path)
+    nodes_config = load_nodes_config(path=settings.query_expander_workflow_config_path)
 
     # Get the config values from the YAML file
     llm_client = build_llm_client(config=components_config["llm"])
@@ -81,7 +107,11 @@ def get_rag_workflow_app() -> Any:
 
     vector_store = build_vector_store(config=components_config["vector_store"])
     retriever = build_retriever(config=components_config["retriever"], vector_store=vector_store, llm=llm)
-    query_rewriter = build_query_processor(config=components_config["query_processor"], llm=llm)
-    generate_node_prompt = nodes_config["generate_node"]["prompt"]
+    query_processor = build_query_processor(config=components_config["query_processor"], llm=llm)
+    reranker = build_reranker(config=components_config["reranker"], llm=llm)
 
-    return get_compiled_workflow(llm_client=llm_client, retriever=retriever, query_processor=query_rewriter, prompt=generate_node_prompt)
+    generate_node_prompt = nodes_config["generate_node"]["prompt"]
+    num_queries = components_config["query_processor"]["params"]["num_queries"]
+
+    return get_compiled_workflow(llm_client=llm_client, retriever=retriever, query_processor=query_processor,
+                                 reranker=reranker, num_queries=num_queries, prompt=generate_node_prompt)

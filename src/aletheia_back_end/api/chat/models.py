@@ -2,14 +2,22 @@
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class Message(BaseModel):
     """Model for individual chat messages."""
 
-    content: str
+    content: str = Field(..., min_length=1, description="The message content must not be empty.")
     role: Literal["user", "assistant"]
+
+    @field_validator('content', mode='after')
+    @classmethod
+    def validate_content(cls, v: str) -> str:
+        """Ensure content is not empty."""
+        if not v.strip():
+            raise ValueError("Message content cannot be empty or only whitespace")
+        return v
 
 
 class Overrides(BaseModel):
@@ -39,9 +47,7 @@ class Context(BaseModel):
 class ChatIn(BaseModel):
     """Input model for Chat."""
 
-    messages: list[
-        Message
-    ]  # List? We'll probably just use one at a time, so it'll probably just be Message
+    messages: list[Message] = Field(..., min_length=1, description="The list of messages must contain at least one message.")
     context: Context
     session_state: Any | None = None
 
