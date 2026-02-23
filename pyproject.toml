@@ -16,7 +16,7 @@ classifiers = [
 Changelog = "https://github.com/Thaleria_Labs/aletheia-back-end/releases"
 
 [tool.poetry.dependencies]
-python = "~3.11.4"
+python = "~3.13.3"
 fastapi = "^0.115.12"
 langchain = "^0.3.25"
 uvicorn = "^0.34.3"
@@ -30,17 +30,6 @@ pydantic-settings = "^2.9.1"
 langchain-azure-ai = "^0.1.4"
 langgraph = "^0.6.3"
 
-[tool.poetry.dev-dependencies]
-coverage = { extras = ["toml"], version = ">=7.5.4" }
-mypy = ">=1.10.1"
-pre-commit = ">=3.7.1"
-pre-commit-hooks = ">=4.6.0"
-pytest = ">=8.2.2"
-safety = ">=3.2.4"
-typeguard = ">=4.3.0"
-ruff = ">=0.5.1"
-pydoclint = ">=0.5"
-
 [tool.poetry.scripts]
 aletheia-back-end = "aletheia_back_end.__main__:main"
 
@@ -48,7 +37,14 @@ aletheia-back-end = "aletheia_back_end.__main__:main"
 pytest = "^8.4.0"
 deptry = "^0.23.0"
 nox = "^2025.5.1"
-nox-poetry = "^1.2.0"
+coverage = { extras = ["toml"], version = ">=7.5.4" }
+mypy = ">=1.10.1"
+pre-commit = ">=3.7.1"
+pre-commit-hooks = ">=4.6.0"
+safety = ">=3.2.4"
+typeguard = ">=4.3.0"
+ruff = ">=0.5.1"
+pydoclint = ">=0.5"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

@@ -1,0 +1,41 @@
+name: Auto-Approve & Merge Dependabot
+
+on: pull_request  # Triggers on PR open/reopen/sync for the current branch
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'  # Only Dependabot PRs
+    steps:
+      - name: Fetch metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2  # Extracts update type (patch/minor/major), dep name
+
+      - name: PR update type verification
+        run: |
+          UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          if [ "$UPDATE_TYPE" = "version-update:semver-major" ]; then
+            echo "The update type is major, therefore no auto-approval or auto-merge will be performed."
+          else
+            echo "Update type: $UPDATE_TYPE"
+            echo "PR URL: $PR_URL"
+          fi
+
+      - name: Approve a PR if it's low-risk
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'  # Not majors
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge
+        if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -10,6 +10,9 @@ from azure.cosmos import PartitionKey
 
 class Settings(BaseSettings):
     """Default settings."""
+    # Authentication credentials
+    basic_auth_username: str = ""
+    basic_auth_password: str = ""
 
     # Database settings
     db_type: str = "postgresql"
@@ -33,20 +36,19 @@ class Settings(BaseSettings):
         "embedding_field": "vector1"
     }
     cosmos_database_properties: dict[str, Any] = {}
-    vector_embedding_policy: dict[str, Any] = {}
 
     # Azure OpenAI settings
     azure_openai_api_key: SecretStr = Field(default=SecretStr(""))
     azure_openai_endpoint: str = ""
     azure_openai_api_version: str = ""
     azure_openai_deployment: str = ""
-    azure_openai_embeddings_dimensions: int = Field(default=1536)
 
     # Azure OpenAI embeddings settings
     azure_openai_embeddings_model_api_key: SecretStr = Field(default=SecretStr("None"))
     azure_openai_embeddings_model_endpoint: str = ""
     azure_openai_embeddings_model_deployment: str = ""
     azure_openai_embeddings_model_api_version: str = ""
+    azure_openai_embeddings_model_dimensions: int = Field(default=1536)
 
     # OpenAI settings
     openai_model_api_key: SecretStr = Field(default=SecretStr("None"))
@@ -69,6 +71,13 @@ class Settings(BaseSettings):
     LOG_FILE_BACKUP_COUNT: int = 5  # Keep 5 backup files
     LOG_TO_CONSOLE: bool = True  # Enable/disable console logging
     LOG_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+    # --- Workflow Settings ---
+    active_workflow: str = ""
+    rag_workflow_config_path: str = ""
+    consistency_check_workflow_config_path: str = ""
+    fact_check_workflow_config_path: str = ""
+    query_expander_workflow_config_path: str = ""
 
     # Pydantic V2 way to configure settings
     model_config = SettingsConfigDict(

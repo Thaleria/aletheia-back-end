@@ -1,6 +1,7 @@
 """Azure Cosmos DB vector store setup for LangChain."""
 
-from typing import Any
+from typing import Any, Optional
+import asyncio
 
 from azure.cosmos import CosmosClient
 from azure.cosmos.exceptions import CosmosHttpResponseError
@@ -24,7 +25,7 @@ vector_embedding_policy = {
             "path": "/" + settings.vector_embeddings_path,
             "dataType": "float32",
             "distanceFunction": "cosine",
-            "dimensions": settings.azure_openai_embeddings_dimensions,
+            "dimensions": settings.azure_openai_embeddings_model_dimensions,
         }
     ]
 }
@@ -105,34 +106,51 @@ class AzureCosmosDBVectorStoreAdapter(VectorStoreInterface):
             cosmos_container_properties=cosmos_container_properties,
             cosmos_database_properties=cosmos_database_properties,
             vector_search_fields=vector_search_fields,
-            search_type=search_type,
+            search_type=search_type
         )
         logger.info("AzureCosmosDBVectorStoreAdapter initialized.")
 
-    async def search(self, query: str, top_k: int = 10,
-                     filter: dict | None = None,
-                     search_type: str = "similarity") -> Any:
+    async def search(self, query: str, party_id: Optional[str | int] = None, top_k: int = 10) -> Any:
         """Performs a similarity search using the Azure Cosmos DB vector store
         based on the input query.
 
         Args:
             query (str): The input query string to search for.
+            party_id (Optional[str | int]): An optional political party ID to
+                filter the search results. Defaults to None.
             top_k (int): The number of top similar documents to retrieve.
                 Defaults to 5.
-            filter (dict): Key / value dict for filtering
-            search_type (str): The type of search to perform.
-                Defaults to "similarity".
 
         Returns:
             Any: A list of documents retrieved from the vector store.
         """
         logger.info(
-            f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k={top_k}'"
+            f"AzureCosmosDBVectorStoreAdapter: Searching for query '{query}' with top_k='{top_k}' for party_id='{party_id}'"
         )
+        cosmos_filter = None
+        if party_id:
+            try:  # TODO: This is a temporary fix as the DB has both string and integer party IDs. When that's corrected, this should be simplified
+                # If the party_id can be converted to an integer, do so. If party_id is already an integer, it will go through smoothly.
+                party_id = int(party_id)
+                # If it's a number (like 16), use the value directly.
+                cosmos_filter = f"c.metadata.partyId = {party_id}"
+            except ValueError:
+                # If it's a string (like 'cpb'), enclose the value in single quotes.
+                cosmos_filter = f"c.metadata.partyId = '{party_id}'"
 
-        return self._vector_store.similarity_search(query=query,
-                                                    k=top_k,
-                                                    filter=filter)
+            return await asyncio.to_thread(
+                self._vector_store.similarity_search,
+                query=query,
+                k=top_k,
+                where=cosmos_filter
+            )
+
+        else:
+            return await asyncio.to_thread(
+                self._vector_store.similarity_search,
+                query=query,
+                k=top_k
+            )
 
 
 def initiate_cosmosdb_vectorstore(documents: list[Document]) -> Any:
@@ -189,28 +207,29 @@ def initiate_cosmosdb_vectorstore(documents: list[Document]) -> Any:
 
 
 def get_vector_store(
-    embedding_model: Any  = Depends(get_azure_openai_embeddings),
+    embedding_model: Any,  # Depends(get_openai_embeddings)
 ) -> VectorStoreInterface:
     """Returns a previously configured Azure Cosmos DB vector store instance.
 
-    This function serves as a dependency injector for FastAPI, providing an
-    initialized instance of `AzureCosmosDBVectorStoreAdapter`. It configures
-    the vector store using global application settings (e.g., Cosmos DB URL,
-    key, database, and container names) and integrates with the provided
-    embedding model.
+    This function serves as a factory or dependency injector, returning an
+    initialized instance of `AzureCosmosDBVectorStoreAdapter` that conforms to
+    the `VectorStoreInterface`.
+    It configures the vector store using global application settings (e.g.,
+    Cosmos DB URL, key, database, and container names) and integrates with the
+    provided embedding model.
 
     Args:
-        embedding_model (Any): An embedding model instance, injected
-            via FastAPI's `Depends`. Defaults to the output of `get_openai_embeddings`.
+        embedding_model (Any): An embedding model instance, injected.
 
     Returns:
-        VectorStoreInterface: A configured instance of `AzureCosmosDBVectorStoreAdapter`
-            which adheres to the `VectorStoreInterface`.
+        VectorStoreInterface: A configured instance of 
+            `AzureCosmosDBVectorStoreAdapter` which adheres to the
+            `VectorStoreInterface`.
     """
     logger.info("Creating AzureCosmosDBVectorStoreAdapter instance.")
     cosmos_client = CosmosClient(settings.cosmos_url, settings.cosmos_key)
     return AzureCosmosDBVectorStoreAdapter(
-        embedding=get_azure_openai_embeddings(),
+        embedding=embedding_model,
         cosmos_client=cosmos_client,
         database_name=settings.database_name,
         container_name=settings.container_name,

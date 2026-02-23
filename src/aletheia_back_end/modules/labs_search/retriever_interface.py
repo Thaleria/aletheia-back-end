@@ -16,13 +16,15 @@ class RetrieverInterface(ABC):
     Abstract Base Class (Interface) of a retriever for a RAG setting.
     """
     @abstractmethod
-    async def retrieve(self, query: str, top_k: int = 5) -> list[Document]:
+    async def retrieve(self, query: str, top_k: int = 5, party_id: Optional[str | int] = None) -> list[Document]:
         """Retrieves the top_k documents from a vector store.
 
         Args:
             query (str): The user's query string.
             top_k (int): The number of top relevant documents to retrieve.
                 Defaults to 5.
+            party_id (str | int, optional): An optional political party ID to
+                filter documents by. Defaults to None.
 
         Returns:
             list[Document]: A list of LangChain Document objects representing
@@ -58,15 +60,17 @@ class BasicRetriever(RetrieverInterface):
         self.top_k = top_k
         self.vector_store = vector_store
 
-    async def retrieve(self, query: str, k: Optional[int] = None) -> list[Document]:
+    async def retrieve(self, query: str, k: Optional[int] = None, party_id: Optional[str | int] = None ) -> list[Document]:
         """Retrieves documents from the vector store based on the query.
 
         Performs a similarity search to find the most relevant documents.
 
         Args:
             query (str): The query string.
-            k v: The number of top documents to retrieve.
+            k (int, optional): The number of top documents to retrieve.
                 If None, `self.top_k` is used.
+            party_id (str | int, optional): An optional political party ID to
+                filter documents by. Defaults to None.
 
         Returns:
             list[Document]: A list of retrieved documents. Returns an empty
@@ -74,14 +78,13 @@ class BasicRetriever(RetrieverInterface):
         """
         k = k if k is not None else self.top_k
         # This vector_store uses the search function from the abstract class, which then uses the similarity search function of Cosmos DB
-        logger.info(f"Performing similarity search for query: {query} to retrieve {k} documents")
+        logger.info(f"Performing similarity search for query: {query} to retrieve {k} documents about party_id: {party_id}")
         try:
-            retrieved_docs = await self.vector_store.search(query, top_k=k)
-            # logger.debug(f"Debug: BasicRetriever retrieved {len(retrieved_docs)} documents for query: '{query}'")
-            logger.debug(f"Retrieved {len(retrieved_docs)} documents")
+            retrieved_docs = await self.vector_store.search(query, top_k=k, party_id=party_id)
+            logger.debug(f"Debug: Retrieved {len(retrieved_docs)} documents")
             return retrieved_docs
         except Exception as e:
-            logger.error(f"Similarity search failed: {e}")
+            logger.error(f"Similarity search failed: {e}", exc_info=True)
             return []
 
     def build_rag_context(self, documents: list[Document]) -> str:
@@ -125,6 +128,7 @@ class RerankingRetriever(BasicRetriever):
     def __init__(self,
                  vector_store: VectorStoreInterface,
                  llm: BaseChatModel,  # TODO: Verify if the BaseChatModel really is needed, the LLM's may come in different types
+                 prompt: str,
                  top_k_initial: int = 10,
                  top_n_reranked: int = 5) -> None:
         """Initializes the RerankingRetriever.
@@ -150,16 +154,12 @@ class RerankingRetriever(BasicRetriever):
         self.llm = llm
         self.prompt_template = PromptTemplate(
             input_variables=["query", "doc"],
-            template="""On a scale of 1-10, rate the relevance of the following document to the query.
-                        Respond with only the numerical score.
-                        query: {query}
-                        Document: {doc}
-                        Relevance Score:"""
+            template=prompt
         )
         self.llm_chain = self.prompt_template | self.llm
 
     async def _get_llm_relevance_score(self, query: str, doc_content: str) -> float:
-        """Tethod to get a relevance score from the LLM for a single document.
+        """Method to get a relevance score from the LLM for a single document.
 
         This method uses an LLM to give a numerical relevance score based on
         the document's content and the query. The LLM's output is then parsed.
@@ -188,7 +188,7 @@ class RerankingRetriever(BasicRetriever):
             logger.warning(f"Warning: Could not parse score from LLM response: '{llm_score}'. Defaulting to 0.")
             return 0.0  # Default score if parsing fails
 
-    async def retrieve(self, query: Optional[str] = None, k: Optional[int] = None) -> list[Document]:
+    async def retrieve(self, query: str, k: Optional[int] = None, party_id: Optional[str | int] = None) -> list[Document]:
         """Performs initial retrieval and then reranks the results using an LLM.
 
         This method first retrieves a larger set of documents using the
@@ -198,8 +198,10 @@ class RerankingRetriever(BasicRetriever):
 
         Args:
             query (str): The query string.
-            k (int, optional): The number of final reranked documents to return.
-                If None, uses `self.top_n_reranked`.
+            k (int, optional): The number of final reranked documents to
+                return. If None, uses `self.top_n_reranked`.
+            party_id (str | int, optional): An optional political party ID to
+                filter documents by. Defaults to None.
 
         Returns:
             list[Document]: A list of reranked documents.
@@ -208,7 +210,7 @@ class RerankingRetriever(BasicRetriever):
         final_k = k if k is not None else self.top_n_reranked
 
         # Step 1: Initial retrieval (call parent's retrieve method)
-        initial_retrieved_docs = await super().retrieve(query, k=self.top_k_initial)  # This retrieve calls the parent's retrieve function which calls the vector store search function which calls the Cosmos DB similarity search function
+        initial_retrieved_docs = await super().retrieve(query, k=self.top_k_initial, party_id=party_id)  # This retrieve calls the parent's retrieve function which calls the vector store search function which calls the Cosmos DB similarity search function
         logger.debug(f"\nInitial retrieval: {len(initial_retrieved_docs)} documents.")
 
         if not initial_retrieved_docs:
@@ -257,7 +259,7 @@ class RerankingRetriever(BasicRetriever):
             return ""  # Handle empty list case
 
         # Extract page_content from each document
-        #TODO: Write Notion task for this
+        # TODO: Write Notion task for this
         document_contents = ['\n'.join([str(doc.metadata), doc.page_content]) for doc in documents]
         context = "\n\n".join(document_contents)
 
