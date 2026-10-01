@@ -34,7 +34,7 @@ langgraph = "^0.6.3"
 aletheia-back-end = "aletheia_back_end.__main__:main"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.4.0"
+pytest = ">=8.4,<10.0"
 deptry = "^0.23.0"
 nox = "^2025.5.1"
 coverage = { extras = ["toml"], version = ">=7.5.4" }
